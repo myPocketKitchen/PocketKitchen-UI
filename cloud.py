@@ -14,7 +14,7 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     bucket_name = "food-inventory"
     source_file_name = "/home/pi/2021-11-29-105425_1920x1080_scrot.png"
-    destination_blob_name = "blob"
+    destination_blob_name = "blob/"
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
