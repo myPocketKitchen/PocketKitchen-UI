@@ -33,5 +33,5 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
         return False
 
 file_path = '/home/pi/2021-11-29-105425_1920x1080_scrot.png' 
-upload_to_bucket('Image 1', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food_inventory')
-upload_to_bucket('blob/Image 2', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food_inventory')
+upload_to_bucket('Image 1', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food-inventory')
+upload_to_bucket('blob/Image 2', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food-inventory')
