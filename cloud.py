@@ -15,7 +15,7 @@ Create a New Bucket
 """
 
 
-my bucket = storage_client.get_bucket('food-inventory')
+my_bucket = storage_client.get_bucket('food-inventory')
 
 # Upload file
 
