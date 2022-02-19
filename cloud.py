@@ -4,6 +4,8 @@
 # 
 import os
 from google.cloud import storage
+import glob
+
 
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/pi/ServiceKey.json'
@@ -22,6 +24,10 @@ Create a New Bucket
 
 # Upload file
 
+"""
+Upload a file
+"""
+
 def upload_to_bucket(blob_name, file_path, bucket_name): 
     try: 
         bucket = storage_client.get_bucket(bucket_name)
@@ -33,5 +39,7 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
         return False
 
 file_path = '/home/pi/' 
-upload_to_bucket('Image 1', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food-inventory')
-upload_to_bucket('blob/Image 2', os.path.join(file_path, '2021-11-29-105425_1920x1080_scrot.png') ,'food-inventory')
+
+
+for filename in glob.glob(os.path.join(file_path, '/images/*.jpg')): 
+    upload_to_bucket(filename, os.path.join(file_path, filename) ,'food-inventory')
