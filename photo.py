@@ -9,7 +9,7 @@ import datetime
 
 for i in range(5):
     sleep(3)
-    timestamp = datetime.datetime.now()
+    timestamp = '{}'.format(datetime.datetime.now())
     camera.capture('/home/pi/images/{}.jpg'.format(timestamp))
 
 
