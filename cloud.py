@@ -38,8 +38,8 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
         print(e)
         return False
 
-file_path = '/home/pi/' 
+file_path = '/home/pi' 
 
 
-for filename in glob.glob(os.path.join(file_path, '/images/*.jpg')): 
+for filename in glob.glob(os.path.join(file_path, '/images/')): 
     upload_to_bucket('Image 3_{}'.format(filename), os.path.join(file_path, filename) ,'food-inventory')
