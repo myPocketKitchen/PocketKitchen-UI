@@ -42,4 +42,4 @@ file_path = '/home/pi/'
 
 
 for filename in glob.glob(os.path.join(file_path, '/images/*.jpg')): 
-    upload_to_bucket(filename, os.path.join(file_path, filename) ,'food-inventory')
+    upload_to_bucket('Image 3_{}'.format(filename), os.path.join(file_path, filename) ,'food-inventory')
