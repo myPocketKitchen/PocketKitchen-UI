@@ -6,6 +6,7 @@ import datetime
 
 #camera.start_preview()
 
+camera = PiCamera()
 
 for i in range(5):
     sleep(3)
