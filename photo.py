@@ -11,7 +11,6 @@ camera = PiCamera()
 food_type = input()
 
 for i in range(5):
-    sleep(3)
     stamp = '{}{}'.format(food_type,datetime.datetime.now())
     camera.capture('/home/pi/food_images/{}.jpg'.format(stamp))
 
