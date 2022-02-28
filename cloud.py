@@ -40,9 +40,9 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
 
 # file_path = '/home/pi' 
 
-file_path = '/home/pi/food_images/' 
+file_path = '/home/pi/food_images/*.jpg' 
 
-for filename in file_path:
+for filename in glob.glob(file_path):
     print(filename)
     # upload_to_bucket('', os.path.join(file_path, '2022-02-23 07:50:54.551648.jpg') ,'food_inventory')
 
