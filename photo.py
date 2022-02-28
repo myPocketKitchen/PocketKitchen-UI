@@ -8,10 +8,12 @@ import datetime
 
 camera = PiCamera()
 
+food_type = input()
+
 for i in range(5):
     sleep(3)
-    timestamp = '{}'.format(datetime.datetime.now())
-    camera.capture('/home/pi/food-cam/images/{}.jpg'.format(timestamp))
+    stamp = '{}{}'.format(food_type,datetime.datetime.now())
+    camera.capture('/home/pi/food_images/{}.jpg'.format(stamp))
 
 
 # camera.stop_preview()
