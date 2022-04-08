@@ -8,6 +8,7 @@ import datetime
 
 camera = PiCamera()
 
+print("Food Type: ")
 food_type = input()
 
 for i in range(5):
