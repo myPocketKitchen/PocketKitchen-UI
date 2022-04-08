@@ -14,9 +14,9 @@ food_type = input()
 print("State: ")
 state = input()
 
-# for i in range(5):
-stamp = '{}{}'.format(state, datetime.datetime.now())
-camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
+for i in range(2):
+    stamp = '{}{}'.format(state, datetime.datetime.now())
+    camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
 
 
 # camera.stop_preview()
