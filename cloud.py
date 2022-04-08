@@ -40,11 +40,12 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
 
 # file_path = '/home/pi' 
 
-file_path = '/home/pi/food_images/*.jpg' 
+file_path = '/home/pi/food_images/*.jpg'
+rel_path = '/home/pi/food_images/' 
 
 for filename in glob.glob(file_path):
     print(filename)
-    upload_to_bucket('{}'.format(filename), '{}'.format(filename) ,'food-inventory')
+    upload_to_bucket('{}'.format(filename), os.path.relpath(filename, rel_path),'food-inventory')
 
 
 # for filename in glob.glob(os.path.join(file_path, '/images/')): 
