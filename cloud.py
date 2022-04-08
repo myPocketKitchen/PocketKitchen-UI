@@ -45,7 +45,7 @@ rel_path = '/home/pi/food_images/'
 
 for filename in glob.glob(file_path):
     print(filename)
-    upload_to_bucket('{}'.format(filename), os.path.relpath(filename, rel_path),'food-inventory')
+    upload_to_bucket( os.path.relpath(filename, rel_path), '{}'.format(filename),'food-inventory')
 
 
 # for filename in glob.glob(os.path.join(file_path, '/images/')): 
