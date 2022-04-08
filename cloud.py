@@ -40,7 +40,7 @@ def upload_to_bucket(blob_name, file_path, bucket_name):
 
 # file_path = '/home/pi' 
 
-file_path = '/home/pi/food_images/*.jpg'
+file_path = '/home/pi/food_images/*/*.jpg'
 rel_path = '/home/pi/food_images/' 
 
 for filename in glob.glob(file_path):
