@@ -16,7 +16,7 @@ state = input()
 
 for i in range(5):
     stamp = '{}{}'.format(state, datetime.datetime.now())
-    camera.capture('/home/pi/food_images/food_type/{}.jpg'.format(stamp))
+    camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
 
 
 # camera.stop_preview()
