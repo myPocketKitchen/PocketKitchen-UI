@@ -89,10 +89,10 @@ def decide(interpreter, width, height, labels):
         if prob>=0.8: 
             print("BINGO")
             food = client.food
-            bowl = food.bowl
+            records = food.records
             # Upload data to Mongo DB
             data = {labels[results[0][0]]: 1}
-            bowl.insert_one(data)
+            records.insert_one(data)
             # max_key = max(decision, key=decision.get)
             # outcome = labels[decision.get(max_key)]
             # print(outcome)
