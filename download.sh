@@ -1,5 +1,3 @@
-23 lines (16 sloc)  642 Bytes
-   
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
