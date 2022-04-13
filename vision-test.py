@@ -73,10 +73,9 @@ def decide(interpreter, width, height, labels):
         stream.truncate()
         
         # Add -1 for imagenet 1000 simplified labels 
-        decision["{}".format(results[0][1])] = results[0][0]
+        # decision["{}".format(results[0][1])] = results[0][0]
 
-        print("label", labels[results[0][0]], "decision", decision)
-        print("probability: ", prob)
+        print("label: ", labels[results[0][0]], "probability: ", prob)
 
         if prob>=0.8: 
             print("BINGO")
