@@ -32,7 +32,6 @@ from tflite_runtime.interpreter import Interpreter
 # GPIO.setmode(GPIO.BOARD)
 # GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-
 def load_labels(path):
   with open(path, 'r') as f:
     return {i: line.strip() for i, line in enumerate(f.readlines())}
@@ -60,7 +59,7 @@ def classify_image(interpreter, image, top_k=1):
   return [(i, output[i]) for i in ordered[:top_k]]
   
 
-def decide(interpreter, width, height, labels): 
+def main(interpreter, width, height, labels): 
   i=0
   decision = {}
   with picamera.PiCamera(resolution=(640, 480), framerate=30) as camera:
@@ -105,3 +104,4 @@ def classify():
 
   return outcome 
 
+main()
