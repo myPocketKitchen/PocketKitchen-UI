@@ -75,10 +75,9 @@ def decide(interpreter, width, height, labels):
         # Add -1 for imagenet 1000 simplified labels 
         decision["{}".format(results[0][1])] = results[0][0]
 
-        print("results 1", results[0][1])
-        print("results 0", results[0][0])
+        print("label", labels[results[0][0]], "decision", decision)
         print("probability: ", prob)
-        
+
         if prob>=0.8: 
             print("BINGO")
             max_key = max(decision, key=decision.get)
