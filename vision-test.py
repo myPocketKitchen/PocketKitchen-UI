@@ -91,7 +91,7 @@ def decide(interpreter, width, height, labels):
             food = client.food
             bowl = food.bowl
             # Upload data to Mongo DB
-            bowl.insert_one({'{} : 1'}.formtat(labels[results[0][0]]))
+            bowl.insert_one({'{} : 1'}.format(labels[results[0][0]]))
             # max_key = max(decision, key=decision.get)
             # outcome = labels[decision.get(max_key)]
             # print(outcome)
