@@ -59,7 +59,7 @@ def classify_image(interpreter, image, top_k=1):
   return [(i, output[i]) for i in ordered[:top_k]]
   
 
-def main(interpreter, width, height, labels): 
+def decide(interpreter, width, height, labels): 
   i=0
   decision = {}
   with picamera.PiCamera(resolution=(640, 480), framerate=30) as camera:
@@ -104,4 +104,5 @@ def classify():
 
   return outcome 
 
-main()
+while True: 
+    classify()
