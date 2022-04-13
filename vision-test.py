@@ -24,6 +24,7 @@ import io
 import time
 import numpy as np
 import picamera
+import pymongo
 
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
@@ -31,6 +32,14 @@ from tflite_runtime.interpreter import Interpreter
 # GPIO.setwarnings(False)
 # GPIO.setmode(GPIO.BOARD)
 # GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+# Get Mongo Database URL Connection String
+file = open("srv.txt")
+srv = file.read()
+file.close()
+
+# connect to MongoDB
+client = pymongo.MongoClient("{}".format(srv))
 
 def load_labels(path):
   with open(path, 'r') as f:
@@ -79,8 +88,12 @@ def decide(interpreter, width, height, labels):
 
         if prob>=0.8: 
             print("BINGO")
-            max_key = max(decision, key=decision.get)
-            outcome = labels[decision.get(max_key)]
+            food = client.food
+            bowl = food.bowl
+            # Upload data to Mongo DB
+            bowl.insert_one(labels[results[0][0]])
+            # max_key = max(decision, key=decision.get)
+            # outcome = labels[decision.get(max_key)]
             # print(outcome)
             return outcome
             break 
