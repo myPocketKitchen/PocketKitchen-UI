@@ -69,8 +69,6 @@ def classify_image(interpreter, image, top_k=1):
   
 
 def decide(interpreter, width, height, labels): 
-  i=0
-  decision = {}
   with picamera.PiCamera(resolution=(640, 480), framerate=30) as camera:
       stream = io.BytesIO()
       for _ in camera.capture_continuous(stream, format='jpeg', use_video_port=True):
@@ -91,11 +89,12 @@ def decide(interpreter, width, height, labels):
             food = client.food
             records = food.records
             # Upload data to Mongo DB
-            data = {labels[results[0][0]]: 1}
+            data = {labels[results[0][0]]: 1, time: time.time()}
             records.insert_one(data)
             # max_key = max(decision, key=decision.get)
             # outcome = labels[decision.get(max_key)]
             # print(outcome)
+            time.sleep(3)
             return outcome
             break 
 #         print("This is a {} with {} confidence over {}".format(labels[label_id], prob, elapsed_ms))

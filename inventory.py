@@ -8,8 +8,8 @@ See item with 80% confidence
 Record item in inventory  
 
 if item already in inventory: 
-    ?
+    ask!
 
 track time item in inventory 
 
-item, timestamp 
+item, timestamp, convert to days, status
