@@ -12,7 +12,7 @@ client = pymongo.MongoClient("{}".format(srv))
 food = client.food
 records = food.records
 
-Print("Food input")
+print("Food input")
 food = input()
 
 timestamp = datetime.datetime.now()
