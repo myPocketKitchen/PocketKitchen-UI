@@ -1,6 +1,12 @@
 import datetime
 import pymongo
 
+
+# Get Mongo Database URL Connection String
+file = open("srv.txt")
+srv = file.read()
+file.close()
+
 client = pymongo.MongoClient("{}".format(srv))
 
 food = client.food
