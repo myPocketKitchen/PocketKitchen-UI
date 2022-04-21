@@ -88,15 +88,17 @@ def decide(interpreter, width, height, labels):
             print("BINGO")
             food = client.food
             records = food.records
+
             # Upload data to Mongo DB
             data = {labels[results[0][0]]: 1, time: time.time()}
-            records.insert_one(data)
-            # max_key = max(decision, key=decision.get)
-            # outcome = labels[decision.get(max_key)]
-            # print(outcome)
-            time.sleep(3)
-            return outcome
-            break 
+            try:
+              records.insert_one(data)
+            except Exception as e:
+                print("Exception 0_o in addition to Mongo")
+                print(e)
+                pass
+                time.sleep(3)
+        
 #         print("This is a {} with {} confidence over {}".format(labels[label_id], prob, elapsed_ms))
 #           camera.annotate_text = '%s %.2f\n%.1fms' % (labels[label_id], prob, elapsed_ms)
 
