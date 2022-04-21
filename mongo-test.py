@@ -13,9 +13,13 @@ food = client.food
 records = food.records
 
 print("Food input")
-food = input()
-
+food = str(input())
 timestamp = datetime.datetime.now()
+
+data = {
+    'food' : food, 
+    time : timestamp
+}
 
 try: 
     records.insert_one(data)
