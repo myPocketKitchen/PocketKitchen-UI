@@ -1,0 +1,34 @@
+
+<head>
+
+</head>
+<body onload="getData();">
+    <p id="items"></p>
+</body>
+
+<script>
+    var variables
+    var time
+    // Initialise Variables
+    // here
+
+    // Functions to get data with POST requests
+function getData() {
+    window.fetch('/getdata', {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"}
+    }).then(function (responseObj) {
+        variables = [];
+        time = [];
+        return  responseObj.json()
+    }).then(function (jsonData) {
+    jsonData.forEach(function (arrayElement) {
+        // create entry for food item
+        variables.push(arrayElement.food);
+        time.push(arrayElement.timestamp);
+    })
+    document.getElementById("items").innerHTML = variables;
+    // Catch errors
+    }).catch(function (error) {console.log(error)});
+}
+</script>
