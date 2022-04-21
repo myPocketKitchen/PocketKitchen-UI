@@ -18,7 +18,7 @@ timestamp = datetime.datetime.now()
 
 data = {
     'food' : food, 
-    time : timestamp
+    'time' : timestamp
 }
 
 try: 
