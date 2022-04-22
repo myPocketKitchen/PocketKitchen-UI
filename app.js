@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.post('/getdata', (req, res) => {
     // get data
 
-    dbo.collection("bowl").find({}).toArray(function(err, result) {
+    dbo.collection("records").find({}).toArray(function(err, result) {
         if (err) throw err;
 
         res.setHeader("Content-Type", "application/json");
@@ -47,4 +47,4 @@ app.post('/getdata', (req, res) => {
 
 // Makes local port that enables rapid prototyping
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 3000)
