@@ -3,7 +3,9 @@
     <title>Cook Up a Plan</title>
 </head>
 <body onload="getData();">
+    <h1>Hello World!</h1>
     <p id="items"></p>
+    <p id="times"></p>
 </body>
 
 <script>
@@ -28,6 +30,7 @@
             timestamp.push(arrayElement.time);
         })
         document.getElementById("items").innerHTML = variables;
+        document.getElementById("times").innerHTML = timestamp;
         // Catch errors
         }).catch(function (error) {console.log(error)});
     }
