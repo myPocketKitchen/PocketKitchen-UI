@@ -36,7 +36,7 @@ app.post('/getdata', (req, res) => {
 
     dbo.collection("records").find({}).toArray(function(err, result) {
         if (err) throw err;
-
+        console.log("I got here!")
         res.setHeader("Content-Type", "application/json");
         // Make output readable
         res.end(JSON.stringify(result));
