@@ -23,6 +23,7 @@
     "chartjs-node-canvas": "^4.1.5",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
+    "enhanced-resolve": "^5.9.3",
     "express": "^4.17.3",
     "mongodb": "^4.2.1",
     "mongoose": "^6.0.14",
