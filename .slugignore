@@ -1,0 +1,6 @@
+# Ignore python files
+*.py
+*.pyc
+*.sh
+/hx711py
+/__pycache__
