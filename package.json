@@ -19,14 +19,14 @@
   },
   "homepage": "https://github.com/mimireyburn/food-cam#readme",
   "dependencies": {
-    "node": "^17.2.0",
     "chart.js": "^3.6.2",
     "chartjs-node-canvas": "^4.1.5",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mongodb": "^4.2.1",
     "mongoose": "^6.0.14",
+    "node": "^17.2.0",
     "plotly.js-dist": "^2.7.0"
   },
   "devDependencies": {
