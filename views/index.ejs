@@ -8,7 +8,7 @@
 
 <script>
     var variables
-    var time
+    var timestamp
     // Initialise Variables
     // here
 
@@ -19,13 +19,13 @@ function getData() {
         "headers": {"Content-Type": "application/json"}
     }).then(function (responseObj) {
         variables = [];
-        time = [];
+        timestamp = [];
         return  responseObj.json()
     }).then(function (jsonData) {
     jsonData.forEach(function (arrayElement) {
         // create entry for food item
         variables.push(arrayElement.food);
-        time.push(arrayElement.timestamp);
+        timestamp.push(arrayElement.time);
     })
     document.getElementById("items").innerHTML = variables;
     // Catch errors
