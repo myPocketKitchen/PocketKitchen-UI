@@ -9,7 +9,7 @@ import datetime
 camera = PiCamera()
 
 # print("Food Type: ")
-food_type = "milk"
+food_type = "juice"
 
 # print("State: ")
 state = "good"
