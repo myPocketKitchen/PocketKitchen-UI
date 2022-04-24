@@ -8,11 +8,11 @@ import datetime
 
 camera = PiCamera()
 
-# print("Food Type: ")
-food_type = "juice"
+print("Food Type: ")
+food_type = input()
 
-# print("State: ")
-state = "good"
+print("State: ")
+state = input()
 
 for i in range(2):
     stamp = '{}{}'.format(state, datetime.datetime.now())
