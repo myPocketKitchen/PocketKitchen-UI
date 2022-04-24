@@ -12,8 +12,7 @@
 <script>
     var variables = [];
     var timestamp = [];
-
-
+    var date = Date.now();
     // Initialise Variables
     // here
 
@@ -23,7 +22,7 @@
 
             return Math.floor((d2-d1)/(24*3600*1000));
         },
-    }
+    };
 
     // Functions to get data with POST requests
     function getData() {
@@ -42,7 +41,7 @@
         })
         document.getElementById("items").innerHTML = variables;
         document.getElementById("times").innerHTML = timestamp;
-        document.getElementById("date").innerHTML = DateDiff.inDays(date, timestamp);
+        document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
         // Catch errors
         }).catch(function (error) {console.log(error)});
     }
