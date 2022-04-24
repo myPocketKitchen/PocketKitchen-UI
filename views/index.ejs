@@ -28,6 +28,9 @@
         },
     }
 
+    var d1 = new Date(timestamp);
+    var d2 = new Date();
+
     // Functions to get data with POST requests
     function getData() {
         window.fetch('/getdata', {
