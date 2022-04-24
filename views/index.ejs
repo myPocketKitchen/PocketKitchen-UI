@@ -13,22 +13,15 @@
     var variables = [];
     var timestamp = [];
 
-    var d1 = new Date(timestamp);
-    var d2 = new Date();
 
     // Initialise Variables
     // here
 
-    var date = Date.now()
-    var difference = date - timestamp;
-
     var DateDiff = {
  
         inDays: function(d1, d2) {
-            var t2 = d2.getTime();
-            var t1 = d1.getTime();
 
-            return Math.floor((t2-t1)/(24*3600*1000));
+            return Math.floor((d2-d1)/(24*3600*1000));
         },
     }
 
