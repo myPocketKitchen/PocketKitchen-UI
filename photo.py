@@ -8,10 +8,10 @@ import datetime
 
 camera = PiCamera()
 
-print("Food Type: ")
+# print("Food Type: ")
 food_type = "milk"
 
-print("State: ")
+# print("State: ")
 state = "good"
 
 for i in range(2):
