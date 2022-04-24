@@ -9,10 +9,10 @@ import datetime
 camera = PiCamera()
 
 print("Food Type: ")
-food_type = input()
+food_type = "bread"
 
 print("State: ")
-state = input()
+state = "good"
 
 for i in range(2):
     stamp = '{}{}'.format(state, datetime.datetime.now())

@@ -15,6 +15,8 @@ records = food.records
 print("Food input")
 food = str(input())
 timestamp = datetime.datetime.now()
+timestamp = int( timestamp.timestamp() )
+print(timestamp)
 
 data = {
     'food' : food, 
