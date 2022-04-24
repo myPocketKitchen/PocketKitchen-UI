@@ -39,6 +39,11 @@
             variables.push(arrayElement.food);
             timestamp.push(arrayElement.time);
         })
+        console.log("date now")
+        console.log(date)
+        console.log("timestamp")
+        console.log(timestamp)
+        
         document.getElementById("items").innerHTML = variables;
         document.getElementById("times").innerHTML = timestamp;
         document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
