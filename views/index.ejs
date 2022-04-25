@@ -6,7 +6,8 @@
     <h1>Hello World!</h1>
     <p id="items"></p>
     <p id="times"></p>
-    <p id="times"></p>
+    <p id="date"></p>
+    <p id="hours"></p>
 </body>
 
 <script>
@@ -17,6 +18,11 @@
     // here
 
     var DateDiff = {
+
+        inHours: function(d1, d2) {
+    
+            return Math.floor((d2-d1)/(3600*1000));
+        },
  
         inDays: function(d1, d2) {
 
@@ -43,10 +49,15 @@
         console.log(date)
         console.log("timestamp")
         console.log(timestamp)
+        console.log("DateDiff")
+        console.log(DateDiff.inDays(timestamp, date))
+        console.log("HoursDiff")
+        console.log(DateDiff.inHours(timestamp, date))
 
         document.getElementById("items").innerHTML = variables;
         document.getElementById("times").innerHTML = timestamp;
         document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
+        document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
         // Catch errors
         }).catch(function (error) {console.log(error)});
     }
