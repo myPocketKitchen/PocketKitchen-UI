@@ -1,4 +1,4 @@
-import datetime
+import time
 import pymongo
 
 
@@ -14,8 +14,7 @@ records = food.records
 
 print("Food input")
 food = str(input())
-timestamp = datetime.datetime.now()
-timestamp = int( timestamp.timestamp() )
+timestamp = int(time.time())
 print(timestamp)
 
 data = {

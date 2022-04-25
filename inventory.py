@@ -3,7 +3,7 @@
 # track time each item has been in the system
 # update list
 
-See item with 80% confidence 
+See item with significant 70% confidence 
 
 Record item in inventory  
 
