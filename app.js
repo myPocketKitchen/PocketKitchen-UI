@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
         text = JSON.stringify(result)
         jason = JSON.parse(text);
 
-        // res.render("index")
+        res.render("index")
       });
 })
 
