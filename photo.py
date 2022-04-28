@@ -3,7 +3,6 @@
 from picamera import PiCamera
 from time import sleep
 import datetime
-import keyboard
 
 #camera.start_preview()
 
