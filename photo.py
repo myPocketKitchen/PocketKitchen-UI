@@ -18,13 +18,8 @@ state = input()
 while True: 
     try:
         pass
-        except KeyboardInterrupt: 
-            print("interrupt")      
-            stamp = '{}{}'.format(state, datetime.datetime.now())
-            camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
-
-# camera.stop_preview()
-
-
-
-
+    except KeyboardInterrupt:
+        print("interrupt")
+        stamp = '{}{}'.format(state, datetime.datetime.now())
+        camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
+        # camera.stop_preview()
