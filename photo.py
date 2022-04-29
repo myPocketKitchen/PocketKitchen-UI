@@ -26,4 +26,4 @@ while True:
         
 
 
- camera.stop_preview()
+camera.stop_preview()
