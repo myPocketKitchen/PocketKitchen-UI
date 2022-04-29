@@ -4,9 +4,8 @@ from picamera import PiCamera
 from time import sleep
 import datetime
 
-#camera.start_preview()
-
 camera = PiCamera()
+camera.start_preview()
 
 print("Food Type: ")
 food_type = input()
@@ -27,4 +26,4 @@ while True:
         
 
 
-# camera.stop_preview()
+ camera.stop_preview()
