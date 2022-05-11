@@ -7,13 +7,15 @@ var MongoClient = require('mongodb').MongoClient;
 
 app.set('view engine', 'ejs')
 
+// -------------------------
+// Connect to the db
+
 var dbo;
 
 MongoClient.connect(mongoURL, function(err, db) {
     if (err) throw err;
     dbo = db.db("food");
 });
-
 
 app.get('/', (req, res) => {
     // get data
@@ -47,6 +49,4 @@ app.post('/getdata', (req, res) => {
 
 // Makes local port that enables rapid prototyping
 
-app.listen(process.env.PORT || 5000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
+app.listen(process.env.PORT || 5000)

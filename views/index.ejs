@@ -1,34 +1,161 @@
-
 <head>
-    <title>Cook Up a Plan</title>
+  <title>Cook Up A Plan</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 550px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+        
+    /* On small screens, set height to 'auto' for the grid */
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;} 
+    }
+  </style>
 </head>
 <body onload="getData();">
-    <h1>Hello World!</h1>
-    <p id="items"></p>
-    <p id="times"></p>
-    <p id="date"></p>
-    <p id="hours"></p>
-</body>
 
+<nav class="navbar navbar-inverse visible-xs">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Cook Up a Plan</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Dashboard</a></li>
+        <li><a href="#">Recipes</a></li>
+        <li><a href="#">Notifications</a></li>
+        <!-- <li><a href="#">Geo</a></li> -->
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav hidden-xs">
+      <h2>Cook Up a Plan</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#section1">Dashboard</a></li>
+        <li><a href="#section2">Recipes</a></li>
+        <li><a href="#section3">Notifications</a></li>
+        <!-- <li><a href="#section3">Geo</a></li> -->
+      </ul><br>
+    </div>
+    <br>
+    
+    <div class="col-sm-9">
+      <div class="well">
+        <h4>Food Inventory</h4>
+        <p id="items"></p>
+      </div>
+      <!-- <div class="row">
+        <div class="col-sm-3">
+          <div class="well">
+            <h4>Users</h4>
+            <p>1 Million</p> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <h4>Pages</h4>
+            <p>100 Million</p> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <h4>Sessions</h4>
+            <p>10 Million</p> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <h4>Bounce</h4>
+            <p>30%</p> 
+          </div>
+        </div> -->
+      </div>
+      <!-- <div class="row">
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Text</p> 
+            <p>Text</p> 
+            <p>Text</p> 
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Text</p> 
+            <p>Text</p> 
+            <p>Text</p> 
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Text</p> 
+            <p>Text</p> 
+            <p>Text</p> 
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="well">
+            <p>Text</p> 
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="well">
+            <p>Text</p> 
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+</body>
 <script>
-    var variables = [];
-    var timestamp = [];
-    var date = Date.now() / 1000 | 0;
     // Initialise Variables
     // here
-
+    var variables = [];
+    var timestamp = [];
+    var date = Date.now() / 1000;
+    
     var DateDiff = {
 
         inHours: function(d1, d2) {
     
-            return Math.floor((d2-d1)/(3600*1000));
+            return Math.floor((d2-d1)/(3600));
         },
  
         inDays: function(d1, d2) {
 
-            return Math.floor((d2-d1)/(24*3600*1000));
+            return Math.floor((d2-d1)/(24*3600));
         },
     };
+
+    let text = "";
+    function createList(foods, timestamp, date) {
+        for (let i = 0; i < foods.length; i++) {
+            text += foods[i].toLowerCase() +"    "+ DateDiff.inDays(timestamp[i], date) + " days" + "<br>";
+            }
+    return text; 
+    }
 
     // Functions to get data with POST requests
     function getData() {
@@ -36,28 +163,23 @@
             "method": "POST",
             "headers": {"Content-Type": "application/json"}
         }).then(function (responseObj) {
-            variables = [];
+            foods = [];
             timestamp = [];
             return  responseObj.json()
         }).then(function (jsonData) {
         jsonData.forEach(function (arrayElement) {
             // create entry for food item
-            variables.push(arrayElement.food);
+            foods.push(arrayElement.food);
             timestamp.push(arrayElement.time);
         })
-        console.log("date now")
-        console.log(date)
-        console.log("timestamp")
-        console.log(timestamp)
-        console.log("DateDiff")
-        console.log(DateDiff.inDays(timestamp, date))
-        console.log("HoursDiff")
-        console.log(DateDiff.inHours(timestamp, date))
 
-        document.getElementById("items").innerHTML = variables;
-        document.getElementById("times").innerHTML = timestamp;
-        document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
-        document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
+        text = createList(foods, timestamp, date);
+
+        document.getElementById("items").innerHTML = text;
+        // document.getElementById("times").innerHTML = timestamp;
+        // document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
+        // document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
+
         // Catch errors
         }).catch(function (error) {console.log(error)});
     }
