@@ -4,18 +4,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 550px}
     
+    /* Change body font */ 
+    body, a{
+      font-family: 'Atkinson Hyperlegible', sans-serif; 
+    }
+
     /* Set gray background color and 100% height */
     .sidenav {
-      background-color: #f1f1f1;
       height: 100%;
+      padding: 20px;
     }
-        
+
+    .inventory {
+      padding: 20px;
+      margin-top: 20px;
+      border: 2px dashed grey;
+      border-radius: 5px;
+    }
+
+    .nav-pills > li.active > a{
+      background-color: #afbc26;
+      color:whitesmoke;
+    } 
+
+    .nav-pills>li:not(.active)>a:hover {
+      background-color: ghostwhite;
+    }
+
+    .nav-pills a{
+      color:#afbc26;
+    }
+
     /* On small screens, set height to 'auto' for the grid */
     @media screen and (max-width: 767px) {
       .row.content {height: auto;} 
@@ -24,15 +52,17 @@
 </head>
 <body onload="getData();">
 
+<!-- MOBILE -->
+
 <nav class="navbar navbar-inverse visible-xs">
   <div class="container-fluid">
-    <div class="navbar-header">
+    <div class="navbar-header" style="background-color: #afbc26">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Cook Up a Plan</a>
+      <a class="navbar-brand" style="color: whitesmoke" href="#">Cook Up a Plan</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -45,12 +75,14 @@
   </div>
 </nav>
 
+<!-- DESKTOP -->
+
 <div class="container-fluid">
   <div class="row content">
-    <div class="col-sm-3 sidenav hidden-xs">
+    <div class="col-sm-3 sidenav hidden-xs" >
       <h2>Cook Up a Plan</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#section1">Dashboard</a></li>
+        <li class="active" ><a href="#section1">Dashboard</a></li>
         <li><a href="#section2">Recipes</a></li>
         <li><a href="#section3">Notifications</a></li>
         <!-- <li><a href="#section3">Geo</a></li> -->
@@ -59,7 +91,7 @@
     <br>
     
     <div class="col-sm-9">
-      <div class="well">
+      <div class="inventory">
         <h4>Food Inventory</h4>
         <p id="items"></p>
       </div>
@@ -157,6 +189,13 @@
     return text; 
     }
 
+    function getRecipes() {
+      window.fetch('/getrecipes', {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"}
+        })
+    }
+
     // Functions to get data with POST requests
     function getData() {
         window.fetch('/getdata', {
@@ -184,3 +223,4 @@
         }).catch(function (error) {console.log(error)});
     }
 </script>
+
