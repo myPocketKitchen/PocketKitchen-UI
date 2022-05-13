@@ -31,30 +31,32 @@ app.get('/', (req, res) => {
 
         res.render("index")
       });
+      
+})
 
-    // var dataToSend;
-    // // spawn new child process to call the python script
-    // const python = spawn('python', ['print-test.py']);
-    // // collect data from script
-    // python.stdout.on('data', function (data) {
-    //     console.log('Pipe data from python script ...');
-    //     dataToSend = data.toString();
-    // //     });
-    // // // in close event we are sure that stream from child process is closed
-    // python.on('close', (code) => {
-    //     console.log(`child process close all stdio with code ${code}`);
-    //     // send data to browser
-    // //     // res.send(dataToSend)
-    //     console.log(dataToSend)
-    // });
+// -------------------------
+// Post to client
 
-    const PythonShell = require('python-shell').PythonShell;
+app.post('/getdata', (req, res) => {
+    // get data
 
-    PythonShell.run('words2vec_rec.py', null, function (err) {
+    dbo.collection("records").find({}).toArray(function(err, result) {
         if (err) throw err;
-        console.log('finished');
-        });
-        
+        // console.log("I got here!")
+        res.setHeader("Content-Type", "application/json");
+        // Make output readable
+        res.end(JSON.stringify(result));
+        // console.log(JSON.stringify(result));
+      });
+
+})
+
+app.post('/getrecipes', (req, res) => {
+    // get recipes
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
     function readJsonFileSync(filepath, encoding){
         if (typeof (encoding) == 'undefined'){
             encoding = 'utf8';
@@ -68,35 +70,38 @@ app.get('/', (req, res) => {
         var filepath = __dirname + '/' + file;
         return readJsonFileSync(filepath);
     }
-    
-    //assume that config.json is in application root
-    
-    json = getConfig('sample.json');
-    console.log(json)
 
-})
+    // var ingredients2 = [];
+    const PythonShell = require('python-shell').PythonShell;
+    var ingredients = [];
+    dbo.collection("records").find({}).project({_id:0, food:1}).toArray(function(err, ingredients1) {  
+        ingredients1.forEach(function (arrayElement) {
+            ingredients.push(arrayElement.food) 
+            arg = JSON.stringify(ingredients) 
+            console.log(arg)
 
-// -------------------------
-// Post to client
+            delay(1000).then(() => console.log('ran after 1 second1 passed'));
 
-app.post('/getdata', (req, res) => {
-    // get data
+            var options = {
+                    args: arg
+                  };
 
-    dbo.collection("records").find({}).toArray(function(err, result) {
-        if (err) throw err;
-        console.log("I got here!")
-        res.setHeader("Content-Type", "application/json");
-        // Make output readable
-        res.end(JSON.stringify(result));
-      });
+            // // console.log(options)
 
-})
-
-app.post('/getrecipes', (req, res) => {
-    // get recipes
-    
-
-})
+            PythonShell.run('words2vec_rec.py', options, function (err) {
+                if (err) throw err;
+                console.log('finished');
+            });
+            
+            delay(1000).then(() => console.log('ran after 1 second1 passed'));
+            
+            json = getConfig('sample.json');
+            // // console.log(json)
+            // fix this!
+            // res.send(json);
+        })
+    });
+});
 
 
 // Makes local port that enables rapid prototyping

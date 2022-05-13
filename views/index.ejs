@@ -50,7 +50,7 @@
     }
   </style>
 </head>
-<body onload="getData();">
+<body onload="getData(); getRecipes();">
 
 <!-- MOBILE -->
 
@@ -94,6 +94,7 @@
       <div class="inventory">
         <h4>Food Inventory</h4>
         <p id="items"></p>
+        <p id="recipes"></p>
       </div>
       <!-- <div class="row">
         <div class="col-sm-3">
@@ -166,6 +167,7 @@
     // here
     var variables = [];
     var timestamp = [];
+    var recipes = [];
     var date = Date.now() / 1000;
     
     var DateDiff = {
@@ -189,11 +191,29 @@
     return text; 
     }
 
+    let menu = "";
+    function createMenu(recipes) {
+        for (let i = 0; i < recipes.length; i++) {
+            menu += (i+1) + ". " + recipes[i] + "<br>";
+            }
+    return menu; 
+    }
+
     function getRecipes() {
       window.fetch('/getrecipes', {
             "method": "POST",
             "headers": {"Content-Type": "application/json"}
+        }).then(function (responseObj){
+          recipes = [];
+          // console.log("object!")
+          return  responseObj.json()
+        }).then(function (jsonData) {
+        jsonData.forEach(function (arrayElement) {
+          recipes.push(arrayElement.recipe);
         })
+        menu = createMenu(recipes);
+        document.getElementById("recipes").innerHTML = menu;
+      }).catch(function (error) {console.log(error)});
     }
 
     // Functions to get data with POST requests

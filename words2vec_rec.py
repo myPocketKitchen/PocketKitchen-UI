@@ -4,6 +4,7 @@ import logging
 import unidecode
 import ast
 import json
+import argparse
 
 import numpy as np
 import pandas as pd
@@ -15,6 +16,12 @@ from collections import defaultdict
 
 # import config
 from ingredient_parser import ingredient_parser
+# Instantiate the parser
+parser = argparse.ArgumentParser(description='Find recipe matches')
+
+parser.add_argument('pos_arg', type=str, help='A required string positional argument')
+args = parser.parse_args()
+
 
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
@@ -241,24 +248,24 @@ def get_recs(ingredients, N=5, mean=False):
     return recommendations
 
 
-if __name__ == "__main__":
-    blockPrint()
-    input = "mushrooms, peppers, cream"
-    rec = get_recs(input)
-    # out = rec.to_json(orient='records')[1:-1].replace('},{', '} {')
-    # print("type: ",type(out))
-    enablePrint()
+# if __name__ == "__main__":
+#     blockPrint()
+#     input = "mushrooms, peppers, cream"
+#     rec = get_recs(input)
+#     # out = rec.to_json(orient='records')[1:-1].replace('},{', '} {')
+#     # print("type: ",type(out))
+#     enablePrint()
 
 # blockPrint()
-input = "mushrooms, peppers, cream"
-rec = get_recs(input)
+ingredients = args.pos_arg
+rec = get_recs(ingredients)
 
 # enablePrint()
 # print(rec.to_json(orient='records'))
   
 out = rec.to_json(orient='records')
 
-print("something")
+# print("something")
 
 with open("sample.json", "w") as outfile:
     json.dump(out, outfile)
