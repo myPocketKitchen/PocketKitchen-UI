@@ -9,6 +9,7 @@ import argparse
 import numpy as np
 import pandas as pd
 
+from collections import OrderedDict
 from gensim.models import Word2Vec
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -257,18 +258,19 @@ def get_recs(ingredients, N=5, mean=False):
 #     enablePrint()
 
 # blockPrint()
+
 ingredients = args.pos_arg
 rec = get_recs(ingredients)
-
+print(rec)
 # enablePrint()
 # print(rec.to_json(orient='records'))
   
-out = rec.to_json(orient='records')
+out = json.dumps(rec.to_json(orient='records'), indent = 4, sort_keys=True)
 
 # print("something")
 
 with open("sample.json", "w") as outfile:
-    json.dump(out, outfile)
+    outfile.write(out)
 
 # enablePrint()
 # print(out)

@@ -73,34 +73,84 @@ app.post('/getrecipes', (req, res) => {
 
     // var ingredients2 = [];
     const PythonShell = require('python-shell').PythonShell;
-    var ingredients = [];
-    dbo.collection("records").find({}).project({_id:0, food:1}).toArray(function(err, ingredients1) {  
-        ingredients1.forEach(function (arrayElement) {
-            ingredients.push(arrayElement.food) 
-            arg = JSON.stringify(ingredients) 
-            console.log(arg)
+    
 
-            delay(1000).then(() => console.log('ran after 1 second1 passed'));
+    // let test = true;
 
-            var options = {
-                    args: arg
-                  };
+    function getIngredients() {
+        var ingredients = [];
+        dbo.collection("records").find({}).project({_id:0, food:1}).toArray(function(err, readout) {
+            readout.forEach(function (arrayElement) {
+                ingredients.push(arrayElement.food) 
+                arg = JSON.stringify(ingredients) 
+                console.log(arg)
+                
+                // delay(1000).then(() => console.log('ran after 1 second1 passed'));
+
+                })
+            })
+            return options = {
+                args: arg
+            };
+        };
+
+    var arg = getIngredients();
+    
+    
+
+
+    function getRecipes(arg) {
+        console.log(arg)
+        PythonShell.run('words2vec_rec.py', arg, function (err) {
+            if (err) throw err;
+            console.log('finished');
+        });
+    }
+
+    function sendRecipes() {
+        json = getConfig('sample.json');
+        res.send(json)
+        console.log("finito completo")
+    }
+
+    async function waiter() {
+        const arg = await getIngredients(); 
+        getRecipes(arg);
+    }
+
+    async function waitress() {
+        const output = await waiter();
+        console.log(output)
+        sendRecipes();
+    }
+    
+
+    waitress();
+    // sendRecipes();
 
             // // console.log(options)
 
-            PythonShell.run('words2vec_rec.py', options, function (err) {
-                if (err) throw err;
-                console.log('finished');
-            });
+            // PythonShell.run('words2vec_rec.py', options, function (err) {
+            //     if (err) throw err;
+            //     json = getConfig('sample.json');
+            //     res.send(json);
+            //     console.log('finished');
+            // });
+
+            // async function asyncCall() {
+            //     console.log('calling');
+            //     await cabbage();
+            //     json = getConfig('sample.json');
+            //     res.send(json);
+            //     console.log("success!")
+            //     // console.logresult);
+            //     // expected output: "resolved"
+            //   }
             
-            delay(1000).then(() => console.log('ran after 1 second1 passed'));
-            
-            json = getConfig('sample.json');
+            // await asyncCall();
             // // console.log(json)
             // fix this!
-            // res.send(json);
-        })
-    });
+            
 });
 
 
