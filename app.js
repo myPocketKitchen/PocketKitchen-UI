@@ -3,6 +3,7 @@ const app = express()
 const {spawn} = require('child_process');
 require('dotenv').config()
 const mongoURL = process.env.KEY;
+var bodyParser=require("body-parser");
 
 var MongoClient = require('mongodb').MongoClient;
 var fs = require("fs"),
@@ -13,6 +14,9 @@ app.set('view engine', 'ejs')
 // -------------------------
 // Connect to the db
 
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json());
+    
 var dbo;
 
 MongoClient.connect(mongoURL, function(err, db) {
@@ -50,6 +54,22 @@ app.post('/getdata', (req, res) => {
       });
 
 })
+
+app.post('/expiry', function(req, res){
+    var data = req.body; //prints john
+    // var id = data["_id"]
+    var mongo = require('mongodb');
+    var o_id = new mongo.ObjectId(data["_id"]);
+    const updateDoc = {
+        $set: {
+          expiry: data["expiry"]
+        },
+      };
+    // // console.log(filter)
+    // // console.log(updateDoc)
+    dbo.collection("records").updateOne({'_id': o_id}, updateDoc);
+    console.log("donezo")
+});
 
 app.post('/getrecipes', (req, res) => {
     // get recipes
