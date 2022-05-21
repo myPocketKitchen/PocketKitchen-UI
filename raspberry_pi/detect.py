@@ -93,7 +93,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     
     av = []
     item = 0
-    score = 0
+    box = 0
 
     # if len(detections)==1:
     #   print("detected 1")
