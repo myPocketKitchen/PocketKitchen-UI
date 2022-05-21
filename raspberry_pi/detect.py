@@ -94,6 +94,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     av = []
 
     if len(detections)>=1: 
+      print(detections)
       if detections[0][1][0][0] in in_out: 
         if len(in_out[detections[0][1][0][0]])<=5:
           av = in_out[detections[0][1][0][0]]
@@ -103,12 +104,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         else:
           av = in_out[detections[0][1][0][0]]
           av.pop()
-          av.append(detections[0][0][3])
+          av.update(0,detections[0][0][3])
           in_out.update({detections[0][1][0][0]: av})
           print("Add a nugg", in_out)
       else:
         in_out[detections[0][1][0][0]] = [detections[0][0][3]]
-        print(in_out)
+        print("Add brand new", in_out)
       # av = Average(roll)
     if detections[0][1][0][1]>=0.45:
       data = { 
