@@ -110,14 +110,14 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       if len(in_out[item])<=4:
         av = in_out[item]
         av.append(score)
-        in_out.update({item: score})
+        in_out.update({item: av})
       else: 
         av = in_out[item]
         av.pop()
         av.insert(0, score)
-        in_out.update({item: score})
+        in_out.update({item: av})
     else:
-      in_out[item] = score
+      in_out[item] = [score]
 
     print(in_out)
 
