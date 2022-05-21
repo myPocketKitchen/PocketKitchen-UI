@@ -92,9 +92,31 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Incorporate in-out detection here 
     
     av = []
+    item = null
+    score = null
 
-    if len(detections)>=2: 
+    if len(detections)==1:
+      item = detections[0][1][0][0]
+      score = detections[0][0][3]
+    elif len(detections)>=2:
+      for x in detections[0]:
+        item = detections[0][x][0][1][0][0]
+        score = detections[0][x][0][1][0][1]
       print(detections)
+      
+    if item in in_out:
+      if len(in_out[item])<=4:
+        av = in_out[item]
+        av.append(score)
+        in_out.update({item: score})
+      else: 
+        av = in_out[item]
+        av.pop()
+        av.insert(0, score)
+        in_out.update({item: score})
+    else:
+      in_out[item] = score
+
       # if detections[0][1][0][0] in in_out: 
       #   if len(in_out[detections[0][1][0][0]])<=5:
       #     av = in_out[detections[0][1][0][0]]
