@@ -92,8 +92,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Incorporate in-out detection here 
     
     av = []
-    item = null
-    score = null
+    item = "null"
+    score = "null"
 
     if len(detections)==1:
       item = detections[0][1][0][0]
