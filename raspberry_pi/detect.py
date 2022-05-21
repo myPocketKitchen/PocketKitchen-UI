@@ -96,12 +96,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       if detections[0][1][0][0] in in_out: 
         if len(in_out[detections[0][1][0][0]])<=5:
           av = in_out[detections[0][1][0][0]]
-          av.pop()
           av.append(detections[0][0][3])
           in_out.update({in_out[detections[0][1][0][0]]: [av]})
           print("Swap out for a new nugg", in_out)
         else:
           av = in_out[detections[0][1][0][0]]
+          av.pop()
           av.append(detections[0][0][3])
           in_out.update({in_out[detections[0][1][0][0]]: [av]})
           print("Add a nugg", in_ou)
