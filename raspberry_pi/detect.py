@@ -93,7 +93,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     
     av = []
     item = "null"
-    score = "null"
+    score = 0
 
     if len(detections)==1:
       item = detections[0][1][0][0]
