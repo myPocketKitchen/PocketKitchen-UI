@@ -92,6 +92,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     in_out = {}
 
     if len(detections)>=1: 
+      print("Detected something!")
       if detections[0][1][0][0] in in_out: 
         if len(in_out[detections[0][1][0][0]])<=5:
           av = in_out[detections[0][1][0][0]]
@@ -108,17 +109,17 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         in_out[detections[0][1][0][0]] = [detections[0][0][3]]
       
       # av = Average(roll)
-      if detections[0][1][0][1]>=0.85:
-        data = { 
-          'food' : detections[0][1][0][0],
-          'time' : int(time.time())
-        }
-        try: 
-          print(av)
-          # records.insert_one(data)
-        except Exception as e:
-          print(e)
-          pass
+    if detections[0][1][0][1]>=0.45:
+      data = { 
+        'food' : detections[0][1][0][0],
+        'time' : int(time.time())
+      }
+      try: 
+        print("Made a 45% + detection")
+        # records.insert_one(data)
+      except Exception as e:
+        print(e)
+        pass
 
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detections)
