@@ -113,8 +113,11 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       print(item, "in", in_out)
       if len(in_out[item])<=4:
         av = in_out[item]
-        av.append(score)
+        av.insert(0,score)
         in_out.update({item: av})
+      elif (in_out[item][0] - in_out[item][4]) > 150:
+        print("Send", item, "to Mongo")
+        sleep(2000)
       else: 
         av = in_out[item]
         av.pop()
