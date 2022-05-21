@@ -95,15 +95,17 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     item = 0
     score = 0
 
-    if len(detections)==1:
-      print("detected 1")
-      item = detections[0][1][0][0]
-      score = detections[0][0][3]
-    elif len(detections)>=2:
-      print("detected 2+")
-      for x in detections[0]:
-        item = detections[0][x][0][1][0][0]
-        score = detections[0][x][0][1][0][1]
+    # if len(detections)==1:
+    #   print("detected 1")
+    #   item = detections[0][1][0][0]
+    #   score = detections[0][0][3]
+    # elif len(detections)>=2:
+    #   print("detected 2+")
+    for x in detections[0]:
+      item = detections[x][1][0][0]
+      score = detections[x][1][0][1]
+      print(detections[0])
+      print(item, score)
 
     if item in in_out:
       print(item, "in", in_out)
