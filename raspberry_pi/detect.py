@@ -30,6 +30,9 @@ client = pymongo.MongoClient("{}".format(srv))
 food = client.food
 records = food.records
 
+def Average(lst):
+    return sum(lst) / len(lst)
+
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
   """Continuously run inference on images acquired from the camera.
@@ -83,16 +86,37 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     detections = detector.detect(rgb_image)
     # Incorporate in-out detection here 
-    if detections[0][1][0][1]>=0.85:
-      data - { 
-        'food' : detections[0][1][0][0],
-        'time' : int(time.time())
-      }
-      try: 
-        records.insert_one(data)
-      except Exception as e:
-        print(e)
-        pass
+    
+    roll = []
+
+    in_out = {}
+
+    if len(detections)>=1: 
+      if detections[0][1][0][0] not in in_out: 
+        in_out[detections[0][1][0][0]] = [detections[0][0][3]]
+      elif len(in_out[detections[0][1][0][0]])<=5:
+        av = in_out[detections[0][1][0][0]]
+        av.pop()
+        av.append(detections[0][0][3])
+        in_out.update({in_out[detections[0][1][0][0]]: av})
+        print("Swap out for a new nugg")
+      else:
+        av = in_out[detections[0][1][0][0]]
+        av.append(detections[0][0][3])
+        in_out.update({in_out[detections[0][1][0][0]]: av})
+        print("Add a nugg")
+      av = Average(roll)
+      if detections[0][1][0][1]>=0.85:
+        data = { 
+          'food' : detections[0][1][0][0],
+          'time' : int(time.time())
+        }
+        try: 
+          print(av)
+          # records.insert_one(data)
+        except Exception as e:
+          print(e)
+          pass
 
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detections)

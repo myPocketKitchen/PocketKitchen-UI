@@ -16,6 +16,7 @@
     /* Change body font */ 
     body, a{
       font-family: 'Atkinson Hyperlegible', sans-serif; 
+      background-color: white;
     }
 
     /* Set gray background color and 100% height */
@@ -36,7 +37,7 @@
       color:whitesmoke;
     }
 
-    .nav-pills > li.active > a{
+    .nav-pills > li.active > a:active{
       background-color: #afbc26;
       color:whitesmoke;
     } 
@@ -71,7 +72,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Dashboard</a></li>
+        <li class="active"><a href="#">Inventory</a></li>
         <li><a href="#">Recipes</a></li>
         <li><a href="#">Notifications</a></li>
         <!-- <li><a href="#">Geo</a></li> -->
@@ -81,14 +82,13 @@
 </nav>
 
 <!-- DESKTOP -->
-
 <div class="container-fluid">
   <div class="row content">
     <div class="col-sm-3 sidenav hidden-xs" >
       <h2>Cook Up a Plan</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li class="active" ><a id="InventButton" href="#section1">Inventory</a></li>
-        <li ><a id="MenuButton" href="#section2">Recipes</a></li>
+        <li><a id="InventButton" href="#section1">Inventory</a></li>
+        <li><a id="MenuButton" href="#section2">Recipes</a></li>
         <li><a id="NotifButton" href="#section3">Notifications</a></li>
         <!-- <li><a href="#section3">Geo</a></li> -->
       </ul><br>
@@ -96,7 +96,15 @@
     <br>
     
     <div class="col-sm-9">
-      <div class="inventory" id="Inventory" style="display:none">
+      <div>
+        <h2>Good morning, Mimi!</h2> 
+        <p>
+            <script> 
+              document.write(new Date().toLocaleDateString("en-GB", {weekday:"long", month:"long", day:"numeric", year:"numeric"})); 
+            </script>
+        </p>
+      </div>
+      <div class="inventory" id="Inventory">
         <h4>Food Inventory</h4>
         <p id="items"></p>
         <table class="table" id="table" align = "center" border="1px"></table>
@@ -104,6 +112,7 @@
       <div class="inventory" id="Recipes" style="display:none">
         <h4>Suggested Recipes</h4>
         <p id="recipes" ></p>
+        <table class="table" id="menu-table" align = "center" border="1px"></table>
       </div>
       <div class="inventory" id="Notifications"  style="display:none">
         <h4>Notifications</h4>
@@ -116,13 +125,19 @@
 </body>
 <script>
 
+    /////////////////  START JAVASCRIPT
+
     const onClick = function() {
       // console.log(this.innerHTML)
       var x = document.getElementById(this.innerHTML);
+      var y = document.getElementById(this.id)
+      const list = y.classList;
       if (x.style.display === "none") {
         x.style.display = "block";
+        list.add("active");
       } else {
         x.style.display = "none";
+        list.remove("active");
       }
     }
 
@@ -130,8 +145,7 @@
     document.getElementById('NotifButton').onclick = onClick;
     document.getElementById('InventButton').onclick = onClick;
 
-    // Initialise Variables
-    // here
+    //////////////  Initialise Variables & Functions here
     var variables = [];
     var timestamp = [];
     var recipes = [];
@@ -167,6 +181,8 @@
     return menu; 
     }
 
+    /////////////////////  GET DATA ()
+
     function getData() {
         window.fetch('/getdata', {
             "method": "POST",
@@ -201,14 +217,7 @@
                  
                 // Create the table header th element
                 var theader = document.createElement("th");
-                
-                
                 theader.innerHTML = cols[i];
-                
-                // if (cols[3] != undefined) {
-                //   let expiry = prompt("Please enter expiry for ${cols[1]}");
-                //   cols[3]=expiry;
-                // }
                  
                 // Append columnName to the table row
                 tr.appendChild(theader);
@@ -221,18 +230,21 @@
                 // remove first col header
                 for (var j = 1; j < cols.length; j++) {
                     var cell = trow.insertCell(-1);
+                    // convert timestamp to days
                     if (j === 2) {
-                      // console.log(j)
                       // console.log(DateDiff.inDays(list[i][cols[j]], date))
-                      
-                      cell.innerHTML = DateDiff.inDays(list[i][cols[j]], date) + " days"
+                      let time_in = list[i][cols[j]] * 1000
+                      let time_obj = new Date(time_in)
+                      let dateFormat = time_obj.toLocaleString()
+                      cell.innerHTML = dateFormat // DateDiff.inDays(list[i][cols[j]], date) + " days"
                     }
-                    else if (list[i][cols[j]]==="null") {
-                      let expiry = prompt("In how many days does the "+list[i][cols[1]]+" expire?")
+                    // 
+                    else if (list[i][cols[j]]===null) {
+                      let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
+                      list[i][cols[j]] = expiry;
                       cell.innerHTML = expiry;
                       var send = {"_id": list[i][cols[0]], "expiry": expiry};
                       var sendString = JSON.stringify(send);
-
                       let testReq = window.fetch("/expiry", {
                         method: "POST",
                         body: sendString,
@@ -242,13 +254,18 @@
                       })
                     }
                     else {
-                    cell.innerHTML = list[i][cols[j]];
+                      let expiry = list[i][cols[3]];
+                      cell.innerHTML = list[i][cols[j]];
+                    }
+                    if (j===4) {
+                      var cell = trow.insertCell(-1);
                     }
                 }
               }
              
             // Add the newly created table containing json data
             var el = document.getElementById("table");
+            // console.log(el)
             el.innerHTML = "";
             el.appendChild(table);
         
@@ -263,6 +280,8 @@
         }).catch(function (error) {console.log(error)});
       }
 
+
+      /////////////////////  GET RECIPES ()
       function getRecipes() {
       window.fetch('/getrecipes', {
             "method": "POST",
@@ -271,41 +290,55 @@
           recipes = [];
           // console.log("object!")
           return  responseObj.json()
-        }).then(function (jsonData) {
-        jsonData.forEach(function (arrayElement) {
-          recipes.push(arrayElement.recipe);
-        })
-        menu = createMenu(recipes);
-        document.getElementById("recipes").innerHTML = menu;
-      }).catch(function (error) {console.log(error)});
-    }
-
-    // Functions to get data with POST requests
-    // function getData() {
-    //     window.fetch('/getdata', {
-    //         "method": "POST",
-    //         "headers": {"Content-Type": "application/json"}
-    //     }).then(function (responseObj) {
-    //         foods = [];
-    //         timestamp = [];
-    //         expiry = [];
-    //         return  responseObj.json()
-    //     }).then(function (jsonData) {
-    //     jsonData.forEach(function (arrayElement) {
-    //         // create entry for food item
-    //         foods.push(arrayElement.food);
-    //         timestamp.push(arrayElement.time);
-    //     })
-
-    //     text = createList(foods, timestamp, date);
-
-    //     document.getElementById("items").innerHTML = text;
-    //     // document.getElementById("times").innerHTML = timestamp;
-    //     // document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
-    //     // document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
-
-    //     // Catch errors
-    //     }).catch(function (error) {console.log(error)});
-    // }
+        }).then(function (list) {
+          var cols = [];
+             
+            for (var i = 0; i < list.length; i++) {
+                for (var k in list[i]) {
+                    if (cols.indexOf(k) === -1) {
+                         
+                        // Push all keys to the array
+                        cols.push(k);
+                    }
+                }
+            }
+            
+            // Create a table element
+            var table = document.createElement("table");
+            table.classList.add("table")
+             
+            // Create table row tr element of a table
+            var tr = table.insertRow(-1);
+            for (var i = 0; i < 2; i++) {
+                 
+                // Create the table header th element
+                var theader = document.createElement("th");
+                
+                theader.innerHTML = cols[i];
+                 
+                // Append columnName to the table row
+                tr.appendChild(theader);
+            }
+             
+            // Adding the data to the table
+            for (var i = 0; i < list.length; i++) {
+                // Create a new row
+                trow = table.insertRow(-1);
+                for (var j = 0; j < 2; j++) {
+                    var cell = trow.insertCell(-1);
+                    if (j===0) {
+                      cell.innerHTML = "<a href='" + list[i][cols[3]] + "''>" + list[i][cols[j]] + "</a>";
+                    }
+                    else {
+                      cell.innerHTML = list[i][cols[j]];
+                    }
+              }
+            // Add the newly created table containing json data
+            var el = document.getElementById("menu-table");
+            el.innerHTML = "";
+            el.appendChild(table);
+            }
+        }).catch(function (error) {console.log(error)});
+      };
 
 </script>
