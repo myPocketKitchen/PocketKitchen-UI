@@ -30,6 +30,10 @@ client = pymongo.MongoClient("{}".format(srv))
 food = client.food
 records = food.records
 
+av = []
+
+in_out = {}
+
 def Average(lst):
     return sum(lst) / len(lst)
 
@@ -87,12 +91,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     detections = detector.detect(rgb_image)
     # Incorporate in-out detection here 
     
-    roll = []
-
-    in_out = {}
 
     if len(detections)>=1: 
-      print("Detected something!")
       if detections[0][1][0][0] in in_out: 
         if len(in_out[detections[0][1][0][0]])<=5:
           av = in_out[detections[0][1][0][0]]
