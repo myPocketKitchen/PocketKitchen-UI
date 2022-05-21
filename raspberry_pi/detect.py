@@ -93,36 +93,37 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     
     av = []
 
-    if len(detections)>=1: 
+    if len(detections)>=2: 
       print(detections)
-      if detections[0][1][0][0] in in_out: 
-        if len(in_out[detections[0][1][0][0]])<=5:
-          av = in_out[detections[0][1][0][0]]
-          av.append(detections[0][0][3])
-          in_out.update({detections[0][1][0][0]: av})
-          # print("Swap out for a new nugg", in_out)
-        else:
-          av = in_out[detections[0][1][0][0]]
-          av.pop()
-          av.insert(0,detections[0][0][3])
-          in_out.update({detections[0][1][0][0]: av})
-          # print("Add a nugg", in_out)
-      else:
-        in_out[detections[0][1][0][0]] = [detections[0][0][3]]
+      # if detections[0][1][0][0] in in_out: 
+      #   if len(in_out[detections[0][1][0][0]])<=5:
+      #     av = in_out[detections[0][1][0][0]]
+      #     av.append(detections[0][0][3])
+      #     in_out.update({detections[0][1][0][0]: av})
+      #     # print("Swap out for a new nugg", in_out)
+      #   else:
+      #     av = in_out[detections[0][1][0][0]]
+      #     av.pop()
+      #     av.insert(0,detections[0][0][3])
+      #     in_out.update({detections[0][1][0][0]: av})
+      #     # print("Add a nugg", in_out)
+      # else:
+      #   in_out[detections[0][1][0][0]] = [detections[0][0][3]]
         # print("Add brand new", in_out)
       # av = Average(roll)
-    if detections[0][1][0][1]>=0.45:
-      data = { 
-        'food' : detections[0][1][0][0],
-        'time' : int(time.time())
-      }
-      try: 
-        # print("Made a 45% + detection")
-        pass
-        # records.insert_one(data)
-      except Exception as e:
-        print(e)
-        pass
+
+    # if detections[0][1][0][1]>=0.45:
+    #   data = { 
+    #     'food' : detections[0][1][0][0],
+    #     'time' : int(time.time())
+    #   }
+    #   try: 
+    #     # print("Made a 45% + detection")
+    #     pass
+    #     # records.insert_one(data)
+    #   except Exception as e:
+    #     print(e)
+    #     pass
 
     # Draw keypoints and edges on input image
     image = utils.visualize(image, detections)
