@@ -105,7 +105,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         av.append(detections[0][0][3])
         in_out.update({in_out[detections[0][1][0][0]]: av})
         print("Add a nugg")
-      av = Average(roll)
+      # av = Average(roll)
       if detections[0][1][0][1]>=0.85:
         data = { 
           'food' : detections[0][1][0][0],
