@@ -101,13 +101,11 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     #   score = detections[0][0][3]
     # elif len(detections)>=2:
     #   print("detected 2+")
-    if len(detections) == 2:
-      print("2!")
-    # print(detections[0])
+    
     for x in range(len(detections)):
       item = detections[x][1][0][0]
       score = detections[x][1][0][1]
-      print(item, score)
+      # print(item, score)
 
     if item in in_out:
       print(item, "in", in_out)
@@ -126,7 +124,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     else:
       in_out[item] = [score]
 
-    print(in_out)
+    # print(in_out)
 
       # if detections[0][1][0][0] in in_out: 
       #   if len(in_out[detections[0][1][0][0]])<=5:
