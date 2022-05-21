@@ -106,7 +106,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         score = detections[0][x][0][1][0][1]
 
     if item in in_out:
-      print(item, "in in_out")
+      print(item, "in", in_out)
       if len(in_out[item])<=4:
         av = in_out[item]
         av.append(score)
