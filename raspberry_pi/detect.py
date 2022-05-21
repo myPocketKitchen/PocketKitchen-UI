@@ -104,14 +104,14 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     
     for x in range(len(detections)):
       item = detections[x][1][0][0]
-      score = detections[x][1][0][1]
-      # print(item, score)
+      box = detections[x][0][3]
+      print(box)
 
     if item in in_out:
-      print(item, "in", in_out)
+      # print(item, "in", in_out)
       if len(in_out[item])<=4:
         av = in_out[item]
-        av.insert(0,score)
+        av.insert(0, box)
         in_out.update({item: av})
       elif (in_out[item][0] - in_out[item][4]) > 150:
         print("Send", item, "to Mongo")
@@ -119,10 +119,10 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       else: 
         av = in_out[item]
         av.pop()
-        av.insert(0, score)
+        av.insert(0, box)
         in_out.update({item: av})
     else:
-      in_out[item] = [score]
+      in_out[item] = [box]
 
     # print(in_out)
 
