@@ -102,8 +102,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       for x in detections[0]:
         item = detections[0][x][0][1][0][0]
         score = detections[0][x][0][1][0][1]
-      print(detections)
-      
+
     if item in in_out:
       if len(in_out[item])<=4:
         av = in_out[item]
@@ -116,6 +115,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         in_out.update({item: score})
     else:
       in_out[item] = score
+
+    print(in_out)
 
       # if detections[0][1][0][0] in in_out: 
       #   if len(in_out[detections[0][1][0][0]])<=5:
