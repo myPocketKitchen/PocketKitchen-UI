@@ -30,7 +30,7 @@ client = pymongo.MongoClient("{}".format(srv))
 food = client.food
 records = food.records
 
-av = []
+
 
 in_out = {}
 
@@ -91,20 +91,21 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     detections = detector.detect(rgb_image)
     # Incorporate in-out detection here 
     
+    av = []
 
     if len(detections)>=1: 
       if detections[0][1][0][0] in in_out: 
         if len(in_out[detections[0][1][0][0]])<=5:
           av = in_out[detections[0][1][0][0]]
           av.append(detections[0][0][3])
-          in_out.update({in_out[detections[0][1][0][0]]: [av]})
+          in_out.update({detections[0][1][0][0]: av})
           print("Swap out for a new nugg", in_out)
         else:
           av = in_out[detections[0][1][0][0]]
           av.pop()
           av.append(detections[0][0][3])
-          in_out.update({in_out[detections[0][1][0][0]]: [av]})
-          print("Add a nugg", in_ou)
+          in_out.update({detections[0][1][0][0]: av})
+          print("Add a nugg", in_out)
       else:
         in_out[detections[0][1][0][0]] = [detections[0][0][3]]
         print(in_out)
