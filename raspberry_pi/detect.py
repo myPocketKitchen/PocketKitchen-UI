@@ -92,19 +92,21 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     in_out = {}
 
     if len(detections)>=1: 
-      if detections[0][1][0][0] not in in_out: 
-        in_out[detections[0][1][0][0]] = [detections[0][0][3]]
-      elif len(in_out[detections[0][1][0][0]])<=5:
-        av = in_out[detections[0][1][0][0]]
-        av.pop()
-        av.append(detections[0][0][3])
-        in_out.update({in_out[detections[0][1][0][0]]: av})
-        print("Swap out for a new nugg")
+      if detections[0][1][0][0] in in_out: 
+        if len(in_out[detections[0][1][0][0]])<=5:
+          av = in_out[detections[0][1][0][0]]
+          av.pop()
+          av.append(detections[0][0][3])
+          in_out.update({in_out[detections[0][1][0][0]]: av})
+          print("Swap out for a new nugg")
+        else:
+          av = in_out[detections[0][1][0][0]]
+          av.append(detections[0][0][3])
+          in_out.update({in_out[detections[0][1][0][0]]: av})
+          print("Add a nugg")
       else:
-        av = in_out[detections[0][1][0][0]]
-        av.append(detections[0][0][3])
-        in_out.update({in_out[detections[0][1][0][0]]: av})
-        print("Add a nugg")
+        in_out[detections[0][1][0][0]] = [detections[0][0][3]]
+      
       # av = Average(roll)
       if detections[0][1][0][1]>=0.85:
         data = { 
