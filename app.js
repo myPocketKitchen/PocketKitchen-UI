@@ -84,7 +84,7 @@ app.post('/getrecipes', (req, res) => {
                     })
                     options = {
                         args : ingredients.join(', '), 
-                        scriptPath: __dirname + '/'
+                        scriptPath: __dirname + '/app/'
                     }
                     console.log(options)
                     resolve(options);
