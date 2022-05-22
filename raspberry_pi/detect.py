@@ -113,12 +113,13 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
         if item in in_out:
           # print(item, "in", in_out)
-          print("Gradient: ", (in_out[item][0] - in_out[item][4])/5)
+          
           if len(in_out[item])<=4:
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
           elif (in_out[item][0] - in_out[item][4])/5 > 40:
+            print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Sent", item)
               data = { 
@@ -133,6 +134,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               print(e)
               pass
           elif (in_out[item][0] - in_out[item][4])/5 < -40:
+            print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Removed", item)
               # records.remove({"Food Item" : item})
