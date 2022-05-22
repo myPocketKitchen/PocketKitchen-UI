@@ -3,13 +3,9 @@
   "version": "1.0.0",
   "description": "Web application to reduce household food waste",
   "main": "app.js",
-  "bin": {
-    "my-program": "words2vec_rec.py"
-  },
   "scripts": {
     "start": "node app.js",
-    "devStart": "nodemon app.js",
-    "build": "python3 words2vec_rec.py"
+    "devStart": "nodemon app.js"
   },
   "repository": {
     "type": "git",
