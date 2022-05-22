@@ -113,27 +113,30 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
         if item in in_out:
           # print(item, "in", in_out)
+          print("Gradient: ", (in_out[item][0] - in_out[item][4])/5)
           if len(in_out[item])<=4:
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
           elif (in_out[item][0] - in_out[item][4])/5 > 40:
             try:
-              print("Sent", item, "to Mongo")
+              print("Sent", item)
               data = { 
                 'Food Item' : detections[0][1][0][0],
                 'Date Added' : int(time.time()), 
                 'Expiry Date' : "N/A"
               }
-              records.insert_one(data)
+              # records.insert_one(data)
+              in_out.pop(item)
               time.sleep(2000)
             except Exception as e:
               print(e)
               pass
           elif (in_out[item][0] - in_out[item][4])/5 < -40:
             try:
-              print("Removed", item, "to Mongo")
-              records.remove({"Food Item" : item})
+              print("Removed", item)
+              # records.remove({"Food Item" : item})
+              in_out.pop(item)
               time.sleep(2000)
             except Exception as e:
               print(e)
