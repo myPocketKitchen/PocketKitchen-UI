@@ -121,9 +121,9 @@ app.post('/getrecipes', (req, res) => {
         //     return JSON.stringify(responseObj)
         // })
         .then(function (data) {
-            var stringified = JSON.stringify(data);
-            var parsedObj = JSON.parse(stringified);
-            res.send(parsedObj);
+            var string = JSON.parse(data)
+            console.log(string)
+            res.send(string);
         });
 });
 
