@@ -117,7 +117,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
-          elif (in_out[item][0] - in_out[item][4])/5 > 240:
+          elif (in_out[item][0] - in_out[item][4])/5 > 40:
             try:
               print("Sent", item, "to Mongo")
               data = { 
@@ -133,7 +133,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           elif (in_out[item][0] - in_out[item][4])/5 < -40:
             try:
               print("Removed", item, "to Mongo")
-              records.remove_one({"Food Item" : item})
+              records.remove({"Food Item" : item})
               time.sleep(2000)
             except Exception as e:
               print(e)
