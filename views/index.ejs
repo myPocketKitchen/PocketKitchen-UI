@@ -239,7 +239,7 @@
                       cell.innerHTML = dateFormat // DateDiff.inDays(list[i][cols[j]], date) + " days"
                     }
                     // 
-                    else if (list[i][cols[j]]===null) {
+                    else if (list[i][cols[j]]==="N/A") {
                       let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
                       list[i][cols[j]] = expiry;
                       cell.innerHTML = expiry;

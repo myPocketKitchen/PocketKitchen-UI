@@ -92,6 +92,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Incorporate in-out detection here 
     
     av = []
+    data = {}
     item = 0
     box = 0
 
@@ -101,28 +102,49 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     #   score = detections[0][0][3]
     # elif len(detections)>=2:
     #   print("detected 2+")
+
+    
     
     for x in range(len(detections)):
-      item = detections[x][1][0][0]
-      box = detections[x][0][3]
-      print(box)
+      if detections[x][1][0][1] > 0.5:
+        item = detections[x][1][0][0]
+        box = detections[x][0][3]
+        # print(box)
 
-    if item in in_out:
-      # print(item, "in", in_out)
-      if len(in_out[item])<=4:
-        av = in_out[item]
-        av.insert(0, box)
-        in_out.update({item: av})
-      elif (in_out[item][0] - in_out[item][4]) > 150:
-        print("Send", item, "to Mongo")
-        sleep(2000)
-      else: 
-        av = in_out[item]
-        av.pop()
-        av.insert(0, box)
-        in_out.update({item: av})
-    else:
-      in_out[item] = [box]
+        if item in in_out:
+          # print(item, "in", in_out)
+          if len(in_out[item])<=4:
+            av = in_out[item]
+            av.insert(0, box)
+            in_out.update({item: av})
+          elif (in_out[item][0] - in_out[item][4]) > 200:
+            try:
+              data = { 
+                'Food Item' : detections[0][1][0][0],
+                'Date Added' : int(time.time()), 
+                'Expiry Date' : "N/A"
+              }
+              records.insert_one(data)
+              print("Sent", item, "to Mongo")
+              time.sleep(2000)
+            except Exception as e:
+              print(e)
+              pass
+          elif (in_out[item][0] - in_out[item][4]) < -200:
+            try:
+              records.remove_one({"Food Item" : item})
+              print("Removed", item, "to Mongo")
+              time.sleep(2000)
+            except Exception as e:
+              print(e)
+              pass
+          else: 
+            av = in_out[item]
+            av.pop()
+            av.insert(0, box)
+            in_out.update({item: av})
+        else:
+          in_out[item] = [box]
 
     # print(in_out)
 
