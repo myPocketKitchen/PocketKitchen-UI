@@ -118,12 +118,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
-          elif (in_out[item][0] - in_out[item][4])/5 > 40:
+          elif (in_out[item][0] - in_out[item][4])/5 > 30:
             print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Sent", item)
               data = { 
-                'Food Item' : detections[0][1][0][0],
+                'Item' : detections[0][1][0][0],
                 'Date Added' : int(time.time()), 
                 'Expiry Date' : "N/A"
               }

@@ -193,6 +193,7 @@
             expiry = [];
             return  responseObj.json()
         }).then(function (list) {
+            console.log(list)
             var cols = [];
              
             for (var i = 0; i < list.length; i++) {
@@ -243,7 +244,7 @@
                       let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
                       list[i][cols[j]] = expiry;
                       cell.innerHTML = expiry;
-                      var send = {"_id": list[i][cols[0]], "expiry": expiry};
+                      var send = {"_id": list[i][cols[0]], "Expiry Date": expiry};
                       var sendString = JSON.stringify(send);
                       let testReq = window.fetch("/expiry", {
                         method: "POST",
@@ -288,9 +289,9 @@
             "headers": {"Content-Type": "application/json"}
         }).then(function (responseObj){
           recipes = [];
-          // console.log("object!")
           return  responseObj.json()
         }).then(function (list) {
+          // console.log(list)
           var cols = [];
              
             for (var i = 0; i < list.length; i++) {

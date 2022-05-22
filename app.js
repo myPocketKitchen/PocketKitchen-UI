@@ -62,7 +62,7 @@ app.post('/expiry', function(req, res){
     var o_id = new mongo.ObjectId(data["_id"]);
     const updateDoc = {
         $set: {
-          expiry: data["expiry"]
+          "Expiry Date" : data["expiry"]
         },
       };
     // // console.log(filter)
@@ -73,9 +73,9 @@ app.post('/expiry', function(req, res){
 
 app.post('/getrecipes', (req, res) => {
     // get recipes
-    function delay(time) {
-        return new Promise(resolve => setTimeout(resolve, time));
-    }
+    // function delay(time) {
+    //     return new Promise(resolve => setTimeout(resolve, time));
+    // }
 
     function readJsonFileSync(filepath, encoding){
         if (typeof (encoding) == 'undefined'){
@@ -99,28 +99,30 @@ app.post('/getrecipes', (req, res) => {
 
     function getIngredients() {
         var ingredients = [];
-        dbo.collection("records").find({}).project({_id:0, food:1}).toArray(function(err, readout) {
+        dbo.collection("records").find({}).project({"_id":0, "Item":1}).toArray(function(err, readout) {
             readout.forEach(function (arrayElement) {
-                ingredients.push(arrayElement.food) 
-                arg = JSON.stringify(ingredients) 
-                console.log(arg)
-                
+                ingredients.push(arrayElement.Item)
+                console.log("Hello from inside getIngredients")
+                console.log(ingredients)
+                // console.log(JSON.stringify(ingredients))
+                // console.log(ingredients)
                 // delay(1000).then(() => console.log('ran after 1 second1 passed'));
-
                 })
             })
-            return options = {
-                args: arg
-            };
-        };
+            // return options = {
+            //     args: arg
+            // };
+        return ingredients;
+    };
 
-    var arg = getIngredients();
+    // getIngredients();
+    // console.log(arg);
     
     
 
 
     function getRecipes(arg) {
-        console.log(arg)
+        // console.log(arg)
         PythonShell.run('words2vec_rec.py', arg, function (err) {
             if (err) throw err;
             console.log('finished');
@@ -133,8 +135,12 @@ app.post('/getrecipes', (req, res) => {
         console.log("finito completo")
     }
 
+
+
     async function waiter() {
-        const arg = await getIngredients(); 
+        const arg = await getIngredients();
+        console.log("hello from here 123123")
+        console.log(arg) 
         getRecipes(arg);
     }
 
