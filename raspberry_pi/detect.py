@@ -129,7 +129,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               }
               # records.insert_one(data)
               in_out.pop(item)
-              time.sleep(2000)
+              time.sleep(1)
             except Exception as e:
               print(e)
               pass
@@ -139,7 +139,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               print("Removed", item)
               # records.remove({"Food Item" : item})
               in_out.pop(item)
-              time.sleep(2000)
+              time.sleep(1)
             except Exception as e:
               print(e)
               pass
