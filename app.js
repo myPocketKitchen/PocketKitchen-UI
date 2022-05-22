@@ -100,18 +100,18 @@ app.post('/getrecipes', (req, res) => {
         })
     }
  
-    function readJsonFileSync(filepath, encoding){
-        if (typeof (encoding) == 'undefined'){
-            encoding = 'utf8';
-        }
-        var file = fs.readFileSync(filepath, encoding);
-        return JSON.parse(file);
-    }
+    // function readJsonFileSync(filepath, encoding){
+    //     if (typeof (encoding) == 'undefined'){
+    //         encoding = 'utf8';
+    //     }
+    //     var file = fs.readFileSync(filepath, encoding);
+    //     return JSON.parse(file);
+    // }
     
-    function getConfig(file){
-        var filepath = __dirname + '/' + file;
-        return readJsonFileSync(filepath);
-    }
+    // function getConfig(file){
+    //     var filepath = __dirname + '/' + file;
+    //     return readJsonFileSync(filepath);
+    // }
 
 
     const ingredients = getIngredients();
@@ -120,11 +120,13 @@ app.post('/getrecipes', (req, res) => {
         // .then(function (responseObj) {
         //     return JSON.stringify(responseObj)
         // })
-        .then(function (data) {
-            var string = JSON.parse(data)
-            console.log(string)
-            res.send(string);
-        });
+        .then(console.log)
+            
+            // function (data) {
+            // var string = JSON.parse(data)
+            // console.log(string)
+            // res.send(string);
+        // });
 });
 
 
