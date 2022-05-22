@@ -93,10 +93,9 @@ app.post('/getrecipes', (req, res) => {
 
     function getRecipes(arg) {
         return new Promise((resolve, reject) => {
-            PythonShell.run('words2vec_rec.py', arg, function (err) {
+            PythonShell.run('words2vec_rec.py', arg, function (err, result) {
                 if (err) throw err;
-                console.log('finished');
-                resolve(); // resolve the empty promise
+                resolve(result); // resolve the empty promise
             });
         })
     }
@@ -118,10 +117,13 @@ app.post('/getrecipes', (req, res) => {
     const ingredients = getIngredients();
     ingredients
         .then(getRecipes)
-        .then(function () {
-            json = getConfig('sample.json');
-            console.log(json);
-            res.send(json);
+        // .then(function (responseObj) {
+        //     return JSON.stringify(responseObj)
+        // })
+        .then(function (data) {
+            var string = JSON.parse(data)
+            console.log(string)
+            res.send(string);
         });
 });
 

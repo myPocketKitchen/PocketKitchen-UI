@@ -261,7 +261,7 @@ def get_recs(ingredients, N=5, mean=False):
 
 ingredients = args.pos_arg
 rec = get_recs(ingredients)
-print(rec)
+# print(rec)
 # enablePrint()
 # print(rec.to_json(orient='records'))
   
@@ -273,5 +273,5 @@ with open("sample.json", "w") as outfile:
     outfile.write(out)
 
 # enablePrint()
-# print(out)
+print(out)
 

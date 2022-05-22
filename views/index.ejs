@@ -193,7 +193,6 @@
             expiry = [];
             return  responseObj.json()
         }).then(function (list) {
-            console.log(list)
             var cols = [];
              
             for (var i = 0; i < list.length; i++) {
@@ -289,8 +288,10 @@
             "headers": {"Content-Type": "application/json"}
         }).then(function (responseObj){
           recipes = [];
+          // console.log("object!")
           return  responseObj.json()
         }).then(function (list) {
+          console.log(list)
           var cols = [];
              
             for (var i = 0; i < list.length; i++) {
@@ -332,13 +333,13 @@
                     else {
                       cell.innerHTML = list[i][cols[j]];
                     }
+                }
               }
             // Add the newly created table containing json data
             var el = document.getElementById("menu-table");
             el.innerHTML = "";
             el.appendChild(table);
-            }
-        }).catch(function (error) {console.log(error)});
+          }).catch(function (error) {console.log(error)});
       };
 
 </script>
