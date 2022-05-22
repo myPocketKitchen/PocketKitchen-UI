@@ -83,7 +83,8 @@ app.post('/getrecipes', (req, res) => {
                     ingredients.push(arrayElement.Item)
                     })
                     options = {
-                        args : ingredients.join(', ')
+                        args : ingredients.join(', '), 
+                        scriptPath: __dirname + '/'
                     }
                     console.log(options)
                     resolve(options);
