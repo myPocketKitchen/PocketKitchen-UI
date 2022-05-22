@@ -83,8 +83,7 @@ app.post('/getrecipes', (req, res) => {
                     ingredients.push(arrayElement.Item)
                     })
                     options = {
-                        args : ingredients.join(', '),
-                        scriptPath : 'https://github.com/mimireyburn/food-cam/blob/main/words2vec_rec.py'
+                        args : ingredients.join(', ')
                     }
                     // console.log(options)
                     resolve(options);
