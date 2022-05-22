@@ -38,7 +38,7 @@ def Average(lst):
     return sum(lst) / len(lst)
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
-        enable_edgetpu: bool) -> None:
+        enable_edgetpu: bool, srv, client, food, records) -> None:
   """Continuously run inference on images acquired from the camera.
 
   Args:
@@ -117,23 +117,23 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
-          elif (in_out[item][0] - in_out[item][4]) > 200:
+          elif (in_out[item][0] - in_out[item][4])/5 > 240:
             try:
+              print("Sent", item, "to Mongo")
               data = { 
                 'Food Item' : detections[0][1][0][0],
                 'Date Added' : int(time.time()), 
                 'Expiry Date' : "N/A"
               }
               records.insert_one(data)
-              print("Sent", item, "to Mongo")
               time.sleep(2000)
             except Exception as e:
               print(e)
               pass
-          elif (in_out[item][0] - in_out[item][4]) < -200:
+          elif (in_out[item][0] - in_out[item][4])/5 < -40:
             try:
-              records.remove_one({"Food Item" : item})
               print("Removed", item, "to Mongo")
+              records.remove_one({"Food Item" : item})
               time.sleep(2000)
             except Exception as e:
               print(e)
@@ -239,7 +239,7 @@ def main():
   args = parser.parse_args()
 
   run(args.model, int(args.cameraId), args.frameWidth, args.frameHeight,
-      int(args.numThreads), bool(args.enableEdgeTPU))
+      int(args.numThreads), bool(args.enableEdgeTPU), srv, client, food, records)
 
 
 if __name__ == '__main__':
