@@ -24,7 +24,7 @@ while True:
         # camera.annotate_text =
         print("interrupt")
         # stamp = '{}{}'.format(state, datetime.datetime.now())
-        name = food_type + i 
+        name = food_type + str(i) 
         i += 1
         camera.capture('/home/pi/new_images/{}/{}.jpg'.format(food_type, name))
     else:
