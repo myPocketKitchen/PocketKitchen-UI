@@ -50,6 +50,13 @@
       color:#afbc26;
     }
 
+    .btn {
+      background-color: #afbc26;
+      margin-top: 30px;
+      border: none
+    }
+  
+
     /* On small screens, set height to 'auto' for the grid */
     @media screen and (max-width: 767px) {
       .row.content {height: auto;} 
@@ -96,7 +103,7 @@
     <br>
     
     <div class="col-sm-9">
-      <div>
+      <div class="col-sm-9">
         <h2>Good morning, Mimi!</h2> 
         <p>
             <script> 
@@ -104,6 +111,13 @@
             </script>
         </p>
       </div>
+      <div class="col-sm-3">
+        <a id="refresh" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-refresh"></span> Refresh
+        </a>
+      </div>
+    </div>
+    <div class="col-sm-8">
       <div class="inventory" id="Inventory">
         <h4>Food Inventory</h4>
         <p id="items"></p>
@@ -194,7 +208,7 @@
             return  responseObj.json()
         }).then(function (list) {
             var cols = [];
-             
+            var x = [];
             for (var i = 0; i < list.length; i++) {
                 for (var k in list[i]) {
                     if (cols.indexOf(k) === -1) {
@@ -213,12 +227,14 @@
             var tr = table.insertRow(-1);
             
             // remove first col data 
-            for (var i = 1; i < cols.length; i++) {
+            for (var i = 1; i < cols.length+1; i++) {
                  
                 // Create the table header th element
                 var theader = document.createElement("th");
                 theader.innerHTML = cols[i];
-                 
+                if (i==4) {
+                  theader.innerHTML = "Time until expiry"
+                }
                 // Append columnName to the table row
                 tr.appendChild(theader);
             }
@@ -230,19 +246,18 @@
                 // remove first col header
                 for (var j = 1; j < cols.length; j++) {
                     var cell = trow.insertCell(-1);
-                    // convert timestamp to days
                     if (j === 2) {
-                      // console.log(DateDiff.inDays(list[i][cols[j]], date))
+                      // Get Time in 
                       let time_in = list[i][cols[j]] * 1000
                       let time_obj = new Date(time_in)
                       let dateFormat = time_obj.toLocaleString()
                       cell.innerHTML = dateFormat // DateDiff.inDays(list[i][cols[j]], date) + " days"
                     }
-                    // 
+                    // If no expiry date in j===3, set one
                     else if (list[i][cols[j]]==="N/A") {
                       let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
                       list[i][cols[j]] = expiry;
-                      cell.innerHTML = expiry;
+                      cell.innerHTML = list[i][cols[j]];
                       var send = {"_id": list[i][cols[0]], "Expiry Date": expiry};
                       var sendString = JSON.stringify(send);
                       let testReq = window.fetch("/expiry", {
@@ -252,14 +267,37 @@
                           "Content-Type": "application/json",
                         }
                       })
+                      if (j===3) {
+                        var parts =expiry.split('/');
+                        var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
+                        var cell = trow.insertCell(-1);
+                        var today = new Date()
+                        var diff = mydate-today.getTime()
+                        var days = Math.floor(diff/(1000*3600*24))
+                        cell.innerHTML = days + " days";
+                        x[i] = (list[i][cols[1]], days)
+                      }
                     }
+                    // If there is an expiry date, set 
                     else {
                       let expiry = list[i][cols[3]];
                       cell.innerHTML = list[i][cols[j]];
+                     
+                      if (j===3) {
+                        var parts =expiry.split('/');
+                        var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
+                        var cell = trow.insertCell(-1);
+                        var today = new Date()
+                        var diff = today.getTime()-mydate
+                        var days = Math.floor(diff/(1000*3600*24))
+                        cell.innerHTML = days + " days";
+                        x[i] = [list[i][cols[1]], days];
+                      }
                     }
-                    if (j===4) {
-                      var cell = trow.insertCell(-1);
-                    }
+                    // if (j===4) {
+                    //   var cell = trow.insertCell(-1);
+                    //   var expiry = new Date(expiry)
+                    // }
                 }
               }
              
@@ -268,7 +306,7 @@
             // console.log(el)
             el.innerHTML = "";
             el.appendChild(table);
-        
+        return x
         // text = createList(foods, timestamp, date);
 
         // document.getElementById("items").innerHTML = text;
@@ -277,7 +315,8 @@
         // document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
 
         // Catch errors
-        }).catch(function (error) {console.log(error)});
+        }).then(console.log)
+        .catch(function (error) {console.log(error)});
       }
 
 
@@ -341,5 +380,15 @@
             el.appendChild(table);
           }).catch(function (error) {console.log(error)});
       };
+
+    var refresh = document.getElementById("refresh")
+
+    // Function for reloading the page
+    function getRefresh () {
+        window.location.reload(true)
+    }
+    
+    // Reload page on button click
+    refresh.onclick=getRefresh;
 
 </script>

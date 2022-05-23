@@ -62,7 +62,7 @@ app.post('/expiry', function(req, res){
     var o_id = new mongo.ObjectId(data["_id"]);
     const updateDoc = {
         $set: {
-          "Expiry Date" : data["expiry"]
+          "Expiry Date" : data["Expiry Date"]
         },
       };
     // // console.log(filter)
