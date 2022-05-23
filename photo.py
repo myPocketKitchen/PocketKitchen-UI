@@ -13,17 +13,20 @@ food_type = input()
 print("State: ")
 state = input()
 
+i = 1
 
 while True: 
     camera.start_preview()
-    camera.annotate_text = 'Waiting...'
+    # camera.annotate_text = 'Waiting...'
     print("Trigger")
     trigger = input()
     if trigger == "":
-        camera.annotate_text = 'Triggered!' 
+        # camera.annotate_text =
         print("interrupt")
-        stamp = '{}{}'.format(state, datetime.datetime.now())
-        camera.capture('/home/pi/food_images/{}/{}.jpg'.format(food_type, stamp))
+        # stamp = '{}{}'.format(state, datetime.datetime.now())
+        name = food_type + i 
+        i += 1
+        camera.capture('/home/pi/new_images/{}/{}.jpg'.format(food_type, name))
     else:
         pass
         
