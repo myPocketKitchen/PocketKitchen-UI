@@ -94,25 +94,25 @@ app.post('/getrecipes', (req, res) => {
     function getRecipes(arg) {
         return new Promise((resolve, reject) => {
             console.log(arg)
-            PythonShell.run('./hello.py', arg, function (err, result) {
+            PythonShell.run('./words2vec_rec.py', arg, function (err, result) {
                 if (err) throw err;
-                resolve(result); // resolve the empty promise
+                resolve(); // resolve the empty promise
             });
         })
     }
  
-    // function readJsonFileSync(filepath, encoding){
-    //     if (typeof (encoding) == 'undefined'){
-    //         encoding = 'utf8';
-    //     }
-    //     var file = fs.readFileSync(filepath, encoding);
-    //     return JSON.parse(file);
-    // }
+    function readJsonFileSync(filepath, encoding){
+        if (typeof (encoding) == 'undefined'){
+            encoding = 'utf8';
+        }
+        var file = fs.readFileSync(filepath, encoding);
+        return JSON.parse(file);
+    }
     
-    // function getConfig(file){
-    //     var filepath = __dirname + '/' + file;
-    //     return readJsonFileSync(filepath);
-    // }
+    function getConfig(file){
+        var filepath = __dirname + '/' + file;
+        return readJsonFileSync(filepath);
+    }
 
 
     const ingredients = getIngredients();
@@ -121,10 +121,11 @@ app.post('/getrecipes', (req, res) => {
         // .then(function (responseObj) {
         //     return JSON.stringify(responseObj)
         // })
-        .then(function (data) {
+        .then(function () {
+            file = getConfig('sample.json')
             // var string = JSON.parse(data)
             // console.log(string)
-            res.send(data);
+            res.send(file);
         });
 });
 
