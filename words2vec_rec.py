@@ -77,7 +77,7 @@ def ingredient_parser_final(ingredient):
     else:
         ingredients = ast.literal_eval(ingredient)
 
-    ingredients = ",".join(ingredients)
+    ingredients = ", ".join(ingredients)
     ingredients = unidecode.unidecode(ingredients)
     return ingredients
 

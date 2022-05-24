@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const {spawn} = require('child_process');
+const spawn = require("child_process").spawn;
 require('dotenv').config()
 const mongoURL = process.env.KEY;
 var bodyParser=require("body-parser");
@@ -93,7 +93,8 @@ app.post('/getrecipes', (req, res) => {
 
     function getRecipes(arg) {
         return new Promise((resolve, reject) => {
-            PythonShell.run('words2vec_rec.py', arg, function (err, result) {
+            console.log(arg)
+            PythonShell.run('./hello.py', arg, function (err, result) {
                 if (err) throw err;
                 resolve(result); // resolve the empty promise
             });
@@ -120,13 +121,11 @@ app.post('/getrecipes', (req, res) => {
         // .then(function (responseObj) {
         //     return JSON.stringify(responseObj)
         // })
-        .then(console.log)
-            
-            // function (data) {
+        .then(function (data) {
             // var string = JSON.parse(data)
             // console.log(string)
-            // res.send(string);
-        // });
+            res.send(data);
+        });
 });
 
 
