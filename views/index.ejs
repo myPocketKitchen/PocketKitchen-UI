@@ -140,255 +140,297 @@
 <script>
 
     /////////////////  START JAVASCRIPT
+  function getColumn(selector, column) {
+  var rows = document.querySelector(selector).getElementsByTagName('tr');
+  return [].slice.call(rows).map(function(tr) {
+      return tr.getElementsByTagName('td')[column].innerText;
+  });
+}
 
-    const onClick = function() {
-      // console.log(this.innerHTML)
-      var x = document.getElementById(this.innerHTML);
-      var y = document.getElementById(this.id)
-      const list = y.classList;
-      if (x.style.display === "none") {
-        x.style.display = "block";
-        list.add("active");
-      } else {
-        x.style.display = "none";
-        list.remove("active");
-      }
+  const onClick = function() {
+    // console.log(this.innerHTML)
+    var x = document.getElementById(this.innerHTML);
+    var y = document.getElementById(this.id)
+    const list = y.classList;
+    if (x.style.display === "none") {
+      x.style.display = "block";
+      y.style.backgroundColor = "#afbc26";
+      y.style.color = "whitesmoke";
+      list.add("active");
+    } else {
+      x.style.display = "none";
+      y.style.backgroundColor = "white";
+      y.style.color = "#afbc26";
+      list.remove("active");
     }
+  }
 
-    document.getElementById('MenuButton').onclick = onClick;
-    document.getElementById('NotifButton').onclick = onClick;
-    document.getElementById('InventButton').onclick = onClick;
+  document.getElementById('MenuButton').onclick = onClick;
+  document.getElementById('NotifButton').onclick = onClick;
+  document.getElementById('InventButton').onclick = onClick;
 
-    //////////////  Initialise Variables & Functions here
-    var variables = [];
-    var timestamp = [];
-    var recipes = [];
-    var expiry = [];
-    var date = Date.now() / 1000;
+  //////////////  Initialise Variables & Functions here
+  var variables = [];
+  var timestamp = [];
+  var recipes = [];
+  var expiry = [];
+  var date = Date.now() / 1000;
     
-    var DateDiff = {
+  var DateDiff = {
 
-        inHours: function(d1, d2) {
-    
-            return Math.floor((d2-d1)/(3600));
-        },
- 
-        inDays: function(d1, d2) {
+      inHours: function(d1, d2) {
+  
+          return Math.floor((d2-d1)/(3600));
+      },
 
-            return Math.floor((d2-d1)/(24*3600));
-        },
-    };
+      inDays: function(d1, d2) {
 
-    let text = "";
-    function createList(foods, timestamp, date) {
-        for (let i = 0; i < foods.length; i++) {
-            text += foods[i].toLowerCase() +"    "+ DateDiff.inDays(timestamp[i], date) + " days" + "<br>";
-            }
-    return text; 
-    }
+          return Math.floor((d2-d1)/(24*3600));
+      },
+  };
 
-    let menu = "";
-    function createMenu(recipes) {
-        for (let i = 0; i < recipes.length; i++) {
-            menu += (i+1) + ". " + recipes[i] + "<br>";
-            }
-    return menu; 
-    }
+  let text = "";
+  function createList(foods, timestamp, date) {
+      for (let i = 0; i < foods.length; i++) {
+          text += foods[i].toLowerCase() +"    "+ DateDiff.inDays(timestamp[i], date) + " days" + "<br>";
+          }
+  return text; 
+  }
+
+  let menu = "";
+  function createMenu(recipes) {
+      for (let i = 0; i < recipes.length; i++) {
+          menu += (i+1) + ". " + recipes[i] + "<br>";
+          }
+  return menu; 
+  }
 
     /////////////////////  GET DATA ()
 
-    function getData() {
-        window.fetch('/getdata', {
-            "method": "POST",
-            "headers": {"Content-Type": "application/json"}
-        }).then(function (responseObj) {
-            foods = [];
-            timestamp = [];
-            expiry = [];
-            return  responseObj.json()
-        }).then(function (list) {
-            var cols = [];
-            var x = [];
-            for (var i = 0; i < list.length; i++) {
-                for (var k in list[i]) {
-                    if (cols.indexOf(k) === -1) {
-                         
-                        // Push all keys to the array
-                        cols.push(k);
-                    }
-                }
-            }
-            
-            // Create a table element
-            var table = document.createElement("table");
-            table.classList.add("table")
-             
-            // Create table row tr element of a table
-            var tr = table.insertRow(-1);
-            
-            // remove first col data 
-            for (var i = 1; i < cols.length+1; i++) {
-                 
-                // Create the table header th element
-                var theader = document.createElement("th");
-                theader.innerHTML = cols[i];
-                if (i==4) {
-                  theader.innerHTML = "Time until expiry"
-                }
-                // Append columnName to the table row
-                tr.appendChild(theader);
-            }
-             
-            // Adding the data to the table
-            for (var i = 0; i < list.length; i++) {
-                // Create a new row
-                trow = table.insertRow(-1);
-                // remove first col header
-                for (var j = 1; j < cols.length; j++) {
-                    var cell = trow.insertCell(-1);
-                    if (j === 2) {
-                      // Get Time in 
-                      let time_in = list[i][cols[j]] * 1000
-                      let time_obj = new Date(time_in)
-                      let dateFormat = time_obj.toLocaleString()
-                      cell.innerHTML = dateFormat // DateDiff.inDays(list[i][cols[j]], date) + " days"
-                    }
-                    // If no expiry date in j===3, set one
-                    else if (list[i][cols[j]]==="N/A") {
-                      let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
-                      list[i][cols[j]] = expiry;
-                      cell.innerHTML = list[i][cols[j]];
-                      var send = {"_id": list[i][cols[0]], "Expiry Date": expiry};
-                      var sendString = JSON.stringify(send);
-                      let testReq = window.fetch("/expiry", {
-                        method: "POST",
-                        body: sendString,
-                        headers: {
-                          "Content-Type": "application/json",
-                        }
-                      })
-                      if (j===3) {
-                        var parts =expiry.split('/');
-                        var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
-                        var cell = trow.insertCell(-1);
-                        var today = new Date()
-                        var diff = mydate-today.getTime()
-                        var days = Math.floor(diff/(1000*3600*24))
-                        cell.innerHTML = days + " days";
-                        x[i] = (list[i][cols[1]], days)
-                      }
-                    }
-                    // If there is an expiry date, set 
-                    else {
-                      let expiry = list[i][cols[3]];
-                      cell.innerHTML = list[i][cols[j]];
-                     
-                      if (j===3) {
-                        var parts =expiry.split('/');
-                        var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
-                        var cell = trow.insertCell(-1);
-                        var today = new Date()
-                        var diff = today.getTime()-mydate
-                        var days = Math.floor(diff/(1000*3600*24))
-                        cell.innerHTML = days + " days";
-                        x[i] = [list[i][cols[1]], days];
-                      }
-                    }
-                    // if (j===4) {
-                    //   var cell = trow.insertCell(-1);
-                    //   var expiry = new Date(expiry)
-                    // }
-                }
+  function getData() {
+      window.fetch('/getdata', {
+          "method": "POST",
+          "headers": {"Content-Type": "application/json"}
+      }).then(function (responseObj) {
+          foods = [];
+          timestamp = [];
+          expiry = [];
+          return  responseObj.json()
+      }).then(function (list) {
+          var cols = [];
+          var x = [];
+          for (var i = 0; i < list.length; i++) {
+              for (var k in list[i]) {
+                  if (cols.indexOf(k) === -1) {
+                        
+                      // Push all keys to the array
+                      cols.push(k);
+                  }
               }
-             
-            // Add the newly created table containing json data
-            var el = document.getElementById("table");
-            // console.log(el)
-            el.innerHTML = "";
-            el.appendChild(table);
-        return x
-        // text = createList(foods, timestamp, date);
+          }
+          
+          // Create a table element
+          var table = document.createElement("table");
+          table.classList.add("table")
+            
+          // Create table row tr element of a table
+          var tr = table.insertRow(-1);
+          
+          // remove first col data 
+          for (var i = 1; i < cols.length+1; i++) {
+                
+              // Create the table header th element
+              var theader = document.createElement("th");
+              theader.innerHTML = cols[i];
+              if (i==4) {
+                theader.innerHTML = "Time until expiry"
+              }
+              // Append columnName to the table row
+              tr.appendChild(theader);
+          }
+            
+          // Adding the data to the table
+          for (var i = 0; i < list.length; i++) {
+              // Create a new row
+              trow = table.insertRow(-1);
+              // remove first col header
+              for (var j = 1; j < cols.length; j++) {
+                  var cell = trow.insertCell(-1);
+                  if (j === 2) {
+                    // Get Time in 
+                    let time_in = list[i][cols[j]] * 1000
+                    let time_obj = new Date(time_in)
+                    let dateFormat = time_obj.toLocaleString()
+                    cell.innerHTML = dateFormat // DateDiff.inDays(list[i][cols[j]], date) + " days"
+                  }
+                  // If no expiry date in j===3, set one
+                  else if (list[i][cols[j]]==="N/A") {
+                    let expiry = prompt("What date does the "+list[i][cols[1]]+" expire? (DD/MM/YY)")
+                    list[i][cols[j]] = expiry;
+                    cell.innerHTML = list[i][cols[j]];
+                    var send = {"_id": list[i][cols[0]], "Expiry Date": expiry};
+                    var sendString = JSON.stringify(send);
+                    let testReq = window.fetch("/expiry", {
+                      method: "POST",
+                      body: sendString,
+                      headers: {
+                        "Content-Type": "application/json",
+                      }
+                    })
+                    if (j===3) {
+                      var parts =expiry.split('/');
+                      var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
+                      var cell = trow.insertCell(-1);
+                      var today = new Date()
+                      var diff = mydate-today.getTime()
+                      var days = Math.floor(diff/(1000*3600*24))
+                      cell.innerHTML = days + " days";
+                      x[i] = (list[i][cols[1]], days)
+                    }
+                  }
+                  // If there is an expiry date, set 
+                  else {
+                    let expiry = list[i][cols[3]];
+                    cell.innerHTML = list[i][cols[j]];
+                    
+                    if (j===3) {
+                      var parts =expiry.split('/');
+                      var mydate = new Date((20+parts[2]), parts[1] - 1, parts[0]); 
+                      var cell = trow.insertCell(-1);
+                      var today = new Date()
+                      var diff = today.getTime()-mydate
+                      var days = Math.floor(diff/(1000*3600*24))
+                      cell.innerHTML = days + " days";
+                      x[i] = [list[i][cols[1]], days];
+                    }
+                  }
+                  // if (j===4) {
+                  //   var cell = trow.insertCell(-1);
+                  //   var expiry = new Date(expiry)
+                  // }
+              }
+            }
+            
+          // Add the newly created table containing json data
+          var el = document.getElementById("table");
+          // console.log(el)
+          el.innerHTML = "";
+          el.appendChild(table);
+      return x
+      // text = createList(foods, timestamp, date);
 
-        // document.getElementById("items").innerHTML = text;
-        // document.getElementById("times").innerHTML = timestamp;
-        // document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
-        // document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
+      // document.getElementById("items").innerHTML = text;
+      // document.getElementById("times").innerHTML = timestamp;
+      // document.getElementById("date").innerHTML = DateDiff.inDays(timestamp, date);
+      // document.getElementById("hours").innerHTML = DateDiff.inHours(timestamp, date);
 
-        // Catch errors
-        }).then(console.log)
-        .catch(function (error) {console.log(error)});
-      }
+      
+      })
+      // Return array {[item, expiry]}
+      .then(console.log)
+      // Catch errors
+      .catch(function (error) {console.log(error)});
+    }
 
 
       /////////////////////  GET RECIPES ()
-      function getRecipes() {
-      window.fetch('/getrecipes', {
-            "method": "POST",
-            "headers": {"Content-Type": "application/json"}
-        }).then(function (responseObj){
-          recipes = [];
-          // console.log("object!")
-          return  responseObj.json()
-        }).then(function (list) {
-          console.log(list)
-          var cols = [];
-             
-            for (var i = 0; i < list.length; i++) {
-                for (var k in list[i]) {
-                    if (cols.indexOf(k) === -1) {
-                         
-                        // Push all keys to the array
-                        cols.push(k);
-                    }
+function getRecipes() {
+  window.fetch('/getrecipes', {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"}
+    }).then(function (responseObj){
+      recipes = [];
+      // console.log("object!")
+      return  responseObj.json()
+    }).then(function (list) {
+      // console.log(list)
+      var cols = [];
+          
+        for (var i = 0; i < list.length; i++) {
+            for (var k in list[i]) {
+                if (cols.indexOf(k) === -1) {
+                      
+                    // Push all keys to the array
+                    cols.push(k);
                 }
             }
+        }
+        
+        // Create a table element
+        var table = document.createElement("table");
+        table.classList.add("table")
+          
+        // Create table row tr element of a table
+        var tr = table.insertRow(-1);
+        for (var i = 0; i < 2; i++) {
+              
+            // Create the table header th element
+            var theader = document.createElement("th");
             
-            // Create a table element
-            var table = document.createElement("table");
-            table.classList.add("table")
-             
-            // Create table row tr element of a table
-            var tr = table.insertRow(-1);
-            for (var i = 0; i < 2; i++) {
-                 
-                // Create the table header th element
-                var theader = document.createElement("th");
-                
-                theader.innerHTML = cols[i];
-                 
-                // Append columnName to the table row
-                tr.appendChild(theader);
-            }
-             
-            // Adding the data to the table
-            for (var i = 0; i < list.length; i++) {
-                // Create a new row
-                trow = table.insertRow(-1);
-                for (var j = 0; j < 2; j++) {
-                    var cell = trow.insertCell(-1);
-                    if (j===0) {
-                      cell.innerHTML = "<a href='" + list[i][cols[3]] + "''>" + list[i][cols[j]] + "</a>";
-                    }
-                    else {
-                      cell.innerHTML = list[i][cols[j]];
-                    }
+            theader.innerHTML = cols[i];
+              
+            // Append columnName to the table row
+            tr.appendChild(theader);
+        }
+          
+        // Adding the data to the table
+        for (var i = 0; i < list.length; i++) {
+            // Create a new row
+            trow = table.insertRow(-1);
+            for (var j = 0; j < 2; j++) {
+                var cell = trow.insertCell(-1);
+                if (j===0) {
+                  cell.innerHTML = "<a href='" + list[i][cols[3]] + "''>" + list[i][cols[j]] + "</a>";
                 }
-              }
-            // Add the newly created table containing json data
-            var el = document.getElementById("menu-table");
-            el.innerHTML = "";
-            el.appendChild(table);
-          }).catch(function (error) {console.log(error)});
-      };
+                else {
+                  cell.innerHTML = list[i][cols[j]];
+                }
+            }
+          }
+        // Add the newly created table containing json data
+        var el = document.getElementById("menu-table");
+        el.innerHTML = "";
+        el.appendChild(table);
+        var recipetable = el
+        return recipetable
+      })
+      .then(function (recipetable) {
+        var arr = [];
+        var theAnchorText = document.querySelectorAll("#menu-table td")
+        var data = theAnchorText.forEach(function (elem) {
+          if (elem.textContent === undefined) {
+          }
+          else {
+            arr.push(elem.textContent)
+          }
+          // console.log(arr)
+        })
+      //   //  => function (elem) {
+      //   //   console.log(elem.textContent)
+      //   //   if (elem.textContent === undefined) {
+      //   //   }
+      //   //   else {
+      //   //     var tablepart = elem.textContent;
+      //   //   }
+          
+      // })
+      
+        // var anchors = theAnchorText.innerHTML
+        // data = [];
+        // document.querySelectorAll("#menu-table td").forEach(innerHTML)
+        // console.log(anchors)
+        // console.log(theAnchorText)
+      }).then(console.log(getColumn('#menu-table',1)))
+      .catch(function (error) {console.log(error)});
+};
 
-    var refresh = document.getElementById("refresh")
+var refresh = document.getElementById("refresh")
 
-    // Function for reloading the page
-    function getRefresh () {
-        window.location.reload(true)
-    }
-    
-    // Reload page on button click
-    refresh.onclick=getRefresh;
+// Function for reloading the page
+function getRefresh () {
+    window.location.reload(true)
+}
+// Reload page on button click
+refresh.onclick=getRefresh;
 
 </script>
