@@ -4,7 +4,7 @@ from tflite_support.task import core
 from tflite_support.task import processor
 
 # Initialization
-base_options = core.BaseOptions(file_name=model_path.lite)
+base_options = core.BaseOptions(file_name=model_path)
 detection_options = processor.DetectionOptions(max_results=2)
 options = vision.ObjectDetectorOptions(base_options=base_options, detection_options=detection_options)
 detector = vision.ObjectDetector.create_from_options(options)
