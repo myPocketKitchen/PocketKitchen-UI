@@ -157,9 +157,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
                 'Expiry Date' : "N/A", 
                 'Status': status
               }
-              records.insert_one(data)
               in_out.pop(item)
-              time.sleep(1)
+              records.insert_one(data)
             except Exception as e:
               print(e)
               pass
@@ -167,9 +166,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Removed", item)
-              records.remove({"Food Item" : item})
               in_out.pop(item)
-              time.sleep(1)
+              records.remove({"Food Item" : item})
             except Exception as e:
               print(e)
               pass
