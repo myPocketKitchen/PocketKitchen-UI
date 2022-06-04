@@ -122,7 +122,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           status = " "
 
         if item in in_out:
-          if len(in_out[item])<=5:
+          if len(in_out[item])<=4:
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
