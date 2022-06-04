@@ -137,6 +137,11 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             elif slope <= -30: 
               print("slope of", item, "less than -30")
               in_out.pop(item)
+            else: 
+              av = in_out[item]
+              av.pop()
+              av.insert(0, box)
+              in_out.update({item: av})
         else: 
           in_out[item] = [box]
         #   elif (in_out[item][0] - in_out[item][4])/5 > 30:
