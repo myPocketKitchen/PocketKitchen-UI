@@ -123,7 +123,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           status = " "
 
         if item in in_out:
-          if len(in_out[item])<=6:
+          if len(in_out[item])<=4:
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
@@ -147,7 +147,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
         #   in_out[item] = [box]
 
 
-          elif (in_out[item][0] - in_out[item][6])/7 > 30:
+          elif (in_out[item][0] - in_out[item][4])/5 > 30:
             print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Sent", item)
@@ -162,12 +162,12 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             except Exception as e:
               print(e)
               pass
-          elif (in_out[item][0] - in_out[item][6])/7 < -40:
+          elif (in_out[item][0] - in_out[item][4])/5 < -40:
             print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Removed", item)
               in_out.pop(item)
-              records.remove({"Food Item" : item})
+              records.delete_one({"Food Item" : item})
             except Exception as e:
               print(e)
               pass
