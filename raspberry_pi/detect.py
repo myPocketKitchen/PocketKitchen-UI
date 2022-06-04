@@ -15,12 +15,14 @@
 import argparse
 import sys
 import time
+import utils
 
 import pymongo
 import cv2
 from object_detector import ObjectDetector
 from object_detector import ObjectDetectorOptions
-import utils
+from datetime import datetime
+
 
 file = open("srv.txt")
 srv = file.read()
@@ -107,13 +109,17 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     
     for x in range(len(detections)):
       if detections[x][1][0][1] > 0.5:
-        item = detections[x][1][0][0]
-        box = detections[x][0][3]
-        # print(box)
+        if "-" in detections[x][1][0][0]: 
+          new_item = detections[0][1][0][0]
+          decay_item = new_item.split("-")
+          item = decay_item[0]
+          status = decay_item[1]
+        else: 
+          item = detections[x][1][0][0]
+          box = detections[x][0][3]
+          status = " "
 
         if item in in_out:
-          # print(item, "in", in_out)
-          
           if len(in_out[item])<=4:
             av = in_out[item]
             av.insert(0, box)
@@ -124,10 +130,11 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               print("Sent", item)
               data = { 
                 'Item' : detections[0][1][0][0],
-                'Date Added' : int(time.time()), 
-                'Expiry Date' : "N/A"
+                'Date Added' :  datetime.today().strftime('%d/%m/%Y'), 
+                'Expiry Date' : "N/A", 
+                'Status': status
               }
-              # records.insert_one(data)
+              records.insert_one(data)
               in_out.pop(item)
               time.sleep(1)
             except Exception as e:
@@ -137,7 +144,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Removed", item)
-              # records.remove({"Food Item" : item})
+              records.remove({"Food Item" : item})
               in_out.pop(item)
               time.sleep(1)
             except Exception as e:
