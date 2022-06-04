@@ -113,6 +113,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
       if detections[x][1][0][1] > 0.5:
         if "-" in detections[x][1][0][0]: 
           new_item = detections[x][1][0][0]
+          box = detections[x][0][3]
           decay_item = new_item.split("-")
           item = decay_item[0]
           status = decay_item[1]
@@ -136,6 +137,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             elif slope <= -30: 
               print("slope of", item, "less than -30")
               in_out.pop(item)
+        else: 
+          in_out[item] = [box]
         #   elif (in_out[item][0] - in_out[item][4])/5 > 30:
         #     print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
         #     try:
