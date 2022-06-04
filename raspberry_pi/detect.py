@@ -127,8 +127,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
             av.insert(0, box)
             in_out.update({item: av})
           else: 
-            time = [1,2,3,4,5]
-            slope, intercept = np.polyfit(np.log(in_out[item]), np.log(time), 1)
+            slope_time = [1,2,3,4,5]
+            slope, intercept = np.polyfit(np.log(in_out[item]), np.log(slope_time), 1)
             print("item: ", item, "slope: ", slope)
             if slope >= 30: 
               print("slope of", item, "bigger than 30")
