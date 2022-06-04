@@ -123,61 +123,63 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           status = " "
 
         if item in in_out:
-          if len(in_out[item])<=4:
+          if len(in_out[item])<=6:
             av = in_out[item]
             av.insert(0, box)
             in_out.update({item: av})
-          else: 
-            slope_time = [1,2,3,4,5]
-            print(item, in_out[item])
-            slope, intercept = np.polyfit(np.log(in_out[item]), np.log(slope_time), 1)
-            print("item: ", item, "slope: ", slope)
-            if slope >= 30: 
-              print("slope of", item, "bigger than 30")
-              in_out.pop(item)
-            elif slope <= -30: 
-              print("slope of", item, "less than -30")
-              in_out.pop(item)
-            else: 
-              av = in_out[item]
-              av.pop()
-              av.insert(0, box)
-              in_out.update({item: av})
-        else: 
-          in_out[item] = [box]
-        #   elif (in_out[item][0] - in_out[item][4])/5 > 30:
-        #     print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
-        #     try:
-        #       print("Sent", item)
-        #       data = { 
-        #         'Item' : detections[0][1][0][0],
-        #         'Date Added' :  datetime.today().strftime('%d/%m/%Y'), 
-        #         'Expiry Date' : "N/A", 
-        #         'Status': status
-        #       }
-        #       records.insert_one(data)
-        #       in_out.pop(item)
-        #       time.sleep(1)
-        #     except Exception as e:
-        #       print(e)
-        #       pass
-        #   elif (in_out[item][0] - in_out[item][4])/5 < -40:
-        #     print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
-        #     try:
-        #       print("Removed", item)
-        #       records.remove({"Food Item" : item})
-        #       in_out.pop(item)
-        #       time.sleep(1)
-        #     except Exception as e:
-        #       print(e)
-        #       pass
         #   else: 
-        #     av = in_out[item]
-        #     av.pop()
-        #     av.insert(0, box)
-        #     in_out.update({item: av})
-        # else:
+        #     slope_time = [1,2,3,4,5]
+        #     print(item, in_out[item])
+        #     slope, intercept = np.polyfit(np.log(in_out[item]), np.log(slope_time), 1)
+        #     print("item: ", item, "slope: ", slope)
+        #     if slope >= 30: 
+        #       print("slope of", item, "bigger than 30")
+        #       in_out.pop(item)
+        #     elif slope <= -30: 
+        #       print("slope of", item, "less than -30")
+        #       in_out.pop(item)
+        #     else: 
+        #       av = in_out[item]
+        #       av.pop()
+        #       av.insert(0, box)
+        #       in_out.update({item: av})
+        # else: 
         #   in_out[item] = [box]
+
+
+          elif (in_out[item][0] - in_out[item][6])/7 > 30:
+            print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
+            try:
+              print("Sent", item)
+              data = { 
+                'Item' : item,
+                'Date Added' :  datetime.today().strftime('%d/%m/%Y'), 
+                'Expiry Date' : "N/A", 
+                'Status': status
+              }
+              records.insert_one(data)
+              in_out.pop(item)
+              time.sleep(1)
+            except Exception as e:
+              print(e)
+              pass
+          elif (in_out[item][0] - in_out[item][6])/7 < -40:
+            print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
+            try:
+              print("Removed", item)
+              records.remove({"Food Item" : item})
+              in_out.pop(item)
+              time.sleep(1)
+            except Exception as e:
+              print(e)
+              pass
+          else: 
+            av = in_out[item]
+            av.pop()
+            av.insert(0, box)
+            in_out.update({item: av})
+        else:
+          in_out[item] = [box]
 
     # print(in_out)
 
