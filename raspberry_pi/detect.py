@@ -110,7 +110,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     for x in range(len(detections)):
       if detections[x][1][0][1] > 0.5:
         if "-" in detections[x][1][0][0]: 
-          new_item = detections[0][1][0][0]
+          new_item = detections[x][1][0][0]
           decay_item = new_item.split("-")
           item = decay_item[0]
           status = decay_item[1]
