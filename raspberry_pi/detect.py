@@ -170,12 +170,15 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               pass
           elif (in_out[item][0] - in_out[item][4])/5 < -40:
             print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
+            t0 = time.time()
             try:
               print("Removed", item)
               in_out.pop(item)
               records.delete_one({"Food Item" : item})
             except Exception as e:
               print(e)
+              t1 = time.time()
+              print("TIME:", t1-t0)
               pass
           else: 
             av = in_out[item]
