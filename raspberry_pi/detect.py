@@ -117,6 +117,9 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
           decay_item = new_item.split("-")
           item = decay_item[0]
           status = decay_item[1]
+          if status == "-fruit": 
+            item = new_item
+            status = " "
         else: 
           item = detections[x][1][0][0]
           box = detections[x][0][3]
@@ -148,6 +151,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
 
           elif (in_out[item][0] - in_out[item][4])/5 > 30:
+            t0 = time.time()
             print(" IN Gradient: ", (in_out[item][0] - in_out[item][4])/5)
             try:
               print("Sent", item)
@@ -161,6 +165,8 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
               records.insert_one(data)
             except Exception as e:
               print(e)
+              t1 = time.time()
+              print("TIME:", t1-t0)
               pass
           elif (in_out[item][0] - in_out[item][4])/5 < -40:
             print("OUT Gradient: ", (in_out[item][0] - in_out[item][4])/5)
