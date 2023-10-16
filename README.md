@@ -16,7 +16,7 @@ pip install requirements.txt
 ## System Architecture
 This web app is part of a wider system architecture for food management. The system architecture is as follows:
 
-<img src="https://github.com/myPocketKitchen/PocketKitchen-UI/assets/79009541/03515908-76ee-4cad-85e6-618a7b82cd76" width=600>
+<img src="https://github.com/myPocketKitchen/PocketKitchen-UI/assets/79009541/1eecd4f5-cc4a-472c-8150-cf24275b39f9" width=600>
 
 ## Web App Flow Chart
 
