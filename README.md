@@ -5,7 +5,7 @@ Pocket Kitchen is a system for managing food more efficiently in the home toward
 - **Recipe suggestions** - The app provides recipe suggestions based on preventing items in the inventory expiring. The user can also search for recipes which use the most stocked ingredients.
 - **Alerts** - The app alerts the user when items are approaching expiry, and when items are expiring on the current day.
 
-<img src="https://github.com/myPocketKitchen/PocketKitchen-UI/assets/79009541/f18fc059-9c5b-4132-b274-dc63f9969a0f" height=600>
+<img src="https://github.com/myPocketKitchen/PocketKitchen-UI/assets/79009541/855fffe5-ccd8-48fe-bdfe-14abad1ec639" height=600>
 
 ## Getting Started
  
